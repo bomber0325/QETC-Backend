@@ -12,6 +12,7 @@ const PropertiesRoutes = require("./properties.route");
 const currencieRoutes = require("./currencies.route");
 const activitiesRoutes = require("./activities.route");
 const branchRoutes = require("./branch.route");
+const programLevel = require("./programlevel.route");
 
 const router = express.Router();
 
@@ -29,7 +30,7 @@ router.use("/users", usersRoute);
 router.use("/currencies", currencieRoutes);
 router.use("/activities", activitiesRoutes);
 // Anasite - Edits:
-// router.use("/programlevel", );
+router.use("/programlevel", programLevel);
 
 // currencieRoutes;
 module.exports = router;
