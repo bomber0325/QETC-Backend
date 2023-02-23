@@ -1,6 +1,7 @@
 "use strict";
 
 const { Model } = require("sequelize");
+// const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class ProgramLevel extends Model {
     /**
@@ -14,13 +15,30 @@ module.exports = (sequelize, DataTypes) => {
   }
   ProgramLevel.init(
     {
-      name: DataTypes.STRING,
-      color: DataTypes.STRING,
+      ID: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      CreatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      Color: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       sequelize,
       modelName: "ProgramLevel",
+      tableName: "programlevel",
     }
   );
+  // const level = await ProgramLevel.findAll();
   return ProgramLevel;
 };

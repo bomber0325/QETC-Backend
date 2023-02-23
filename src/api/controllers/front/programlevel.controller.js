@@ -1,7 +1,7 @@
 const db = require("../../models");
 const ProgramLevel = db.ProgramLevel;
 const Activity = db.Activity;
-// create programms
+// create program levels
 exports.createProgramLevel = async (req, res, next) => {
   try {
     console.log("Req.body programLevel controller =====>", req.body);
@@ -33,11 +33,10 @@ exports.createProgramLevel = async (req, res, next) => {
   }
 };
 
-// list programms
+// list program levels
 exports.listProgramLevels = async (req, res, next) => {
   try {
     const uni = await ProgramLevel.findAndCountAll();
-
     let { page, limit, name } = req.query;
 
     console.log("unitt", uni.count);
@@ -58,7 +57,7 @@ exports.listProgramLevels = async (req, res, next) => {
 
     console.log("filter", filter);
     const faqs = await ProgramLevel.findAll({
-      order: [["updatedAt", "DESC"]],
+      order: [["CreatedAt", "DESC"]],
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
@@ -67,7 +66,7 @@ exports.listProgramLevels = async (req, res, next) => {
     // res.send(uni);
     return res.send({
       success: true,
-      message: "Programms fetched successfully",
+      message: "program levels fetched successfully",
       data: {
         faqs,
         pagination: {
@@ -143,6 +142,7 @@ exports.get = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
+      console.log("oooooooooooooooooooooooo\n", ProgramLevel);
       const programLevel = await ProgramLevel.findByPk(id);
 
       if (programLevel)
