@@ -57,7 +57,7 @@ exports.listProgramLevels = async (req, res, next) => {
 
     console.log("filter", filter);
     const faqs = await ProgramLevel.findAll({
-      order: [["CreatedAt", "DESC"]],
+      order: [["updatedAt", "DESC"]],
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
