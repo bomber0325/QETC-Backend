@@ -9,7 +9,7 @@ exports.createUniversityType = async (req, res, next) => {
 
     let universitytype = {
       name: req.body.name,
-      color: req.body.color,
+      Color: req.body.Color,
     };
 
     //save the universitytype in db

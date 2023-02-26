@@ -3,10 +3,9 @@ const express = require("express");
 //  const controller = require('../../../controllers/front/university.controller')
 const controller = require("../../../controllers/front/qualificationtype.controller");
 const router = express.Router();
-
-router
-  .route("/createQualificationType")
-  .post(controller.createQualificationType);
+const multer = require("multer");
+const upload = multer();
+router.route("/create").post(upload.any(), controller.createQualificationType);
 router.route("/listQualificationTypes").get(controller.listQualificationTypes);
 router.route("/edit").put(controller.edit);
 router.route("/delete/:id").delete(controller.delete);

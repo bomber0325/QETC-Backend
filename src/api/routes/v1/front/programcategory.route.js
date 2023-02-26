@@ -4,7 +4,9 @@ const express = require("express");
 const controller = require("../../../controllers/front/programcategory.controller");
 const router = express.Router();
 
-router.route("/createProgramCategory").post(controller.createProgramCategory);
+const multer = require("multer");
+const upload = multer();
+router.route("/create").post(upload.any(), controller.createProgramCategory);
 router.route("/listProgramCategorys").get(controller.listProgramCategorys);
 router.route("/edit").put(controller.edit);
 router.route("/delete/:id").delete(controller.delete);

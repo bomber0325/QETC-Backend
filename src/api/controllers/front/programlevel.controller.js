@@ -9,7 +9,7 @@ exports.createProgramLevel = async (req, res, next) => {
 
     let programLevel = {
       name: req.body.name,
-      color: req.body.color,
+      Color: req.body.Color,
     };
 
     //save the programLevel in db

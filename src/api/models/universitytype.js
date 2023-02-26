@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "UniversityType",
-      tableName: "univeritytype",
+      tableName: "universitytype",
     }
   );
   // const level = await UniversityType.findAll();

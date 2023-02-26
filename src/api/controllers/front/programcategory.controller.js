@@ -4,12 +4,12 @@ const Activity = db.Activity;
 // create program categorys
 exports.createProgramCategory = async (req, res, next) => {
   try {
-    console.log("Req.body programCategory controller =====>", req.body);
+    console.log("Req.body programCategory controller =====>", req.headers);
     //
 
     let programCategory = {
       name: req.body.name,
-      color: req.body.color,
+      Color: req.body.Color,
     };
 
     //save the programCategory in db

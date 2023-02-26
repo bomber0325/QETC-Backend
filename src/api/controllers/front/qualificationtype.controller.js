@@ -9,7 +9,7 @@ exports.createQualificationType = async (req, res, next) => {
 
     let qualificationType = {
       name: req.body.name,
-      color: req.body.color,
+      Color: req.body.Color,
     };
 
     //save the qualificationType in db

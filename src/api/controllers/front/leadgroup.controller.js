@@ -9,7 +9,7 @@ exports.createLeadGroup = async (req, res, next) => {
 
     let leadgroup = {
       name: req.body.name,
-      color: req.body.color,
+      Color: req.body.Color,
     };
 
     //save the leadgroup in db

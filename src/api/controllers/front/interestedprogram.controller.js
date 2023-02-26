@@ -9,7 +9,7 @@ exports.createInterestedProgram = async (req, res, next) => {
 
     let interestedprogram = {
       name: req.body.name,
-      color: req.body.color,
+      Color: req.body.Color,
     };
 
     //save the interestedprogram in db
