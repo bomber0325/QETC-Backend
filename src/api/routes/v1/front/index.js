@@ -19,6 +19,9 @@ const qualificationType = require("./qualificationtype.route");
 const universityType = require("./universitytype.route");
 const leadGroup = require("./leadgroup.route");
 const interestedProgram = require("./interestedprogram.route");
+const applicationModuleStatus = require("./applicationmodulestatus.route");
+const leadsManagmentModuleStatus = require("./leadsmanagmentmodulestatus.route");
+const invoiceModuleStatus = require("./invoicemodulestatus.route");
 
 const router = express.Router();
 
@@ -42,6 +45,9 @@ router.use("/qualificationtype", qualificationType);
 router.use("/universitytype", universityType);
 router.use("/leadgroup", leadGroup);
 router.use("/interestedprogram", interestedProgram);
+router.use("/applicationmodulestatus", applicationModuleStatus);
+router.use("/leadsmanagmentmodulestatus", leadsManagmentModuleStatus);
+router.use("/invoicemodulestatus", invoiceModuleStatus);
 
 // currencieRoutes;
 module.exports = router;
