@@ -1,6 +1,7 @@
 const db = require("../../models");
 const Lead = db.Lead;
 const ProgrammeDetails = db.ProgrameDetails;
+const LeadsManagmentModuleStatus = db.LeadsManagmentModuleStatus;
 const Activity = db.Activity;
 
 // create lead
@@ -87,6 +88,13 @@ exports.listLead = async (req, res, next) => {
         {
           model: ProgrammeDetails,
           as: "ProgrameDetail",
+          include: [
+            {
+              model: LeadsManagmentModuleStatus,
+              // as: "status",
+              // foreignKey: "sssss",
+            },
+          ],
         },
       ],
     });

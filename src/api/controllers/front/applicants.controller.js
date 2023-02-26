@@ -1,4 +1,5 @@
 const db = require("../../models");
+const { ApplicationModuleStatus } = db;
 const Applicants = db.Applicants;
 const ApplicationDetails = db.ApplicationDetails;
 const Activity = db.Activity;
@@ -155,6 +156,13 @@ exports.listApplicants = async (req, res, next) => {
         {
           model: ApplicationDetails,
           as: "ApplicationDetail",
+          include: [
+            {
+              model: ApplicationModuleStatus,
+              // as: "status",
+              // foreignKey: "sssss",
+            },
+          ],
         },
       ],
     });

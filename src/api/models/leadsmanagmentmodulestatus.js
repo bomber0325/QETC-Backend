@@ -11,6 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // LeadsManagmentModuleStatus.belongsTo(models.ProgrameDetails, {
+      //   foreignKey: "I",
+      // });
+      // }
+      LeadsManagmentModuleStatus.hasMany(models.ProgrameDetails, {
+        foreignKey: "status",
+      });
+
+      // LeadsManagmentModuleStatus.belongsToMany(models.ProgrameDetails, {
+      //   foreignKey: "status",
+      // });
     }
   }
   LeadsManagmentModuleStatus.init(

@@ -9,9 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      ProgrameDetails.belongsTo(models.LeadsManagmentModuleStatus, {
+        foreignKey: "status",
+      });
       ProgrameDetails.belongsTo(models.Lead, {
         foreignKey: "leadId",
       });
+      // ProgrameDetails.belongsTo(models.LeadsManagmentModuleStatus);
+      // ProgrameDetails.hasOne(models.LeadsManagmentModuleStatus);
     }
   }
   ProgrameDetails.init(
@@ -20,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
       qualificationType: DataTypes.STRING,
       selectUniversity: DataTypes.STRING,
       interestedProgramme: DataTypes.STRING,
-      status: DataTypes.STRING,
+      // status: DataTypes.STRING,
+      // status: DataTypes.INTEGER, // Add this line
       cert: DataTypes.STRING,
       comments: DataTypes.STRING,
     },

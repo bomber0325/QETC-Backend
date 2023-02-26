@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Lead.hasOne(models.ProgrameDetails);
+      Lead.hasOne(models.ProgrameDetails, {
+        foreignKey: "leadId",
+      });
     }
   }
   Lead.init(
