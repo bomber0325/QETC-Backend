@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      InvoiceModuleStatus.hasMany(models.CommissionInvoice, {
+        foreignKey: "statusID",
+      });
     }
   }
   InvoiceModuleStatus.init(

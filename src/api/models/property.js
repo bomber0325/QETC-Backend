@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   Property.init(
     {
       //4 program level 5 Program Category 6 Qualificaton type 7 university type 8 LeadGroup 9 intreseted program
-      type: DataTypes.NUMBER, //1 application status //2 lead status 3 invoice status
+      type: DataTypes.INTEGER, //1 application status //2 lead status 3 invoice status
       property: DataTypes.STRING,
     },
     {

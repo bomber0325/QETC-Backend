@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Branch.hasMany(models.CommissionInvoice, {
+        foreignKey: "branchID",
+      });
     }
   }
   Branch.init(

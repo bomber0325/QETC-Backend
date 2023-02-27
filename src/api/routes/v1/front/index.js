@@ -22,6 +22,7 @@ const interestedProgram = require("./interestedprogram.route");
 const applicationModuleStatus = require("./applicationmodulestatus.route");
 const leadsManagmentModuleStatus = require("./leadsmanagmentmodulestatus.route");
 const invoiceModuleStatus = require("./invoicemodulestatus.route");
+const commissionInvoice = require("./commissioninvoice.route");
 
 const router = express.Router();
 
@@ -48,6 +49,7 @@ router.use("/interestedprogram", interestedProgram);
 router.use("/applicationmodulestatus", applicationModuleStatus);
 router.use("/leadsmanagmentmodulestatus", leadsManagmentModuleStatus);
 router.use("/invoicemodulestatus", invoiceModuleStatus);
+router.use("/commissioninvoice", commissionInvoice);
 
 // currencieRoutes;
 module.exports = router;
