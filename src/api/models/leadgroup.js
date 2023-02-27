@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "LeadGroup",
-      tableName: "loadgroup",
+      tableName: "leadgroup",
     }
   );
   // const level = await LeadGroup.findAll();
