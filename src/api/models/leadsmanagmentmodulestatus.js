@@ -18,7 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       LeadsManagmentModuleStatus.hasMany(models.ProgrameDetails, {
         foreignKey: "status",
       });
-
+      // edits
+      LeadsManagmentModuleStatus.hasMany(models.Lead, {
+        foreignKey: "statusID",
+      });
+      //
       // LeadsManagmentModuleStatus.belongsToMany(models.ProgrameDetails, {
       //   foreignKey: "status",
       // });

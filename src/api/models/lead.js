@@ -11,6 +11,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Lead.hasOne(models.ProgrameDetails, {
         foreignKey: "leadId",
+        as: "ProgrameDetail",
+      });
+      Lead.belongsTo(models.Branch, {
+        foreignKey: "branchID",
+      });
+      Lead.belongsTo(models.Programme, {
+        foreignKey: "programID",
+      });
+      Lead.belongsTo(models.LeadsManagmentModuleStatus, {
+        foreignKey: "statusID",
+      });
+      Lead.belongsTo(models.University, {
+        foreignKey: "universityID",
       });
     }
   }
@@ -25,6 +38,22 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       refferalName: DataTypes.STRING,
       refferalEmail: DataTypes.STRING,
+      programID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      universityID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      branchID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      statusID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {
       sequelize,

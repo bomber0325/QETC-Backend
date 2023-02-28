@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       ProgrameDetails.belongsTo(models.Lead, {
         foreignKey: "leadId",
+        as: "ProgrameDetail",
       });
       // ProgrameDetails.belongsTo(models.LeadsManagmentModuleStatus);
       // ProgrameDetails.hasOne(models.LeadsManagmentModuleStatus);

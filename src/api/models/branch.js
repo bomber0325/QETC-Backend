@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       Branch.hasMany(models.CommissionInvoice, {
         foreignKey: "branchID",
       });
+      Branch.hasMany(models.Lead, {
+        foreignKey: "branchID",
+      });
     }
   }
   Branch.init(

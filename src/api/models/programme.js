@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Programme.hasMany(models.Lead, {
+        foreignKey: "programID",
+      });
     }
   }
   Programme.init(

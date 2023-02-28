@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       University.hasMany(models.CommissionInvoice, {
         foreignKey: "universityID",
       });
+      University.hasMany(models.Lead, {
+        foreignKey: "universityID",
+      });
     }
   }
   University.init(

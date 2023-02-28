@@ -3,6 +3,7 @@ const Lead = db.Lead;
 const ProgrammeDetails = db.ProgrameDetails;
 const LeadsManagmentModuleStatus = db.LeadsManagmentModuleStatus;
 const Activity = db.Activity;
+const { Branch, Programme, University } = db;
 
 // create lead
 exports.createLead = async (req, res, next) => {
@@ -96,6 +97,10 @@ exports.listLead = async (req, res, next) => {
             },
           ],
         },
+        Branch,
+        Programme,
+        LeadsManagmentModuleStatus,
+        University,
       ],
     });
     // console.log("faqs", faqs);
@@ -258,6 +263,7 @@ exports.get = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       const lead = await Lead.findByPk(id);
+      console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
       console.log("lead id ==>", lead.dataValues.id);
       // const programeTable = await ProgrammeDetails.findByPk(id);
       lead.dataValues.programmeDetails = await ProgrammeDetails.findOne({
