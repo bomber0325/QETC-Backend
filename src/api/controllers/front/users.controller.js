@@ -1,6 +1,7 @@
 const db = require("../../models");
 const Users = db.Users;
 const Activity = db.Activity;
+const { Branch } = db;
 
 // create Branch
 exports.create = async (req, res, next) => {
@@ -45,6 +46,7 @@ exports.list = async (req, res, next) => {
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
+      include: [Branch],
     });
     console.log("faqs", faqs);
     // res.send(user);
