@@ -55,6 +55,8 @@ exports.createApplicant = async (req, res, next) => {
       releaseLetter: req.body.releaseLetter,
       status: req.body.status,
       ApplicantId: applicants.dataValues.id,
+      branchID: Math.floor(Math.random() * 4 + 1),
+      // Anasite - Edits, Make it come from UI
     };
     applicantDetails = await ApplicationDetails.create(applicantDetails);
 
