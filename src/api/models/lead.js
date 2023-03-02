@@ -40,19 +40,19 @@ module.exports = (sequelize, DataTypes) => {
       refferalEmail: DataTypes.STRING,
       programID: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        // allowNull: false,
       },
       universityID: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        // allowNull: false,
       },
       branchID: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        // allowNull: false,
       },
       statusID: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        // allowNull: false,
       },
     },
     {

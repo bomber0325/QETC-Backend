@@ -10,7 +10,7 @@ exports.createApplicant = async (req, res, next) => {
 
   try {
     console.log("Req.body applicants =====>", req.body);
-    console.log("req.files", req.files);
+    console.log("req.files", req.files ? req.files : "!No Files!");
 
     let applicants = {
       fullName: req.body.fullName,
@@ -19,9 +19,15 @@ exports.createApplicant = async (req, res, next) => {
       address1: req.body.address1,
       address2: req.body.address2,
       country: req.body.country,
-      image: req.files.image[0].filename,
+      image:
+        req?.files?.image && req?.files?.image[0]
+          ? req?.files?.image[0].filename
+          : "",
       passportNo: req.body.passportNo,
-      fileUpload: req.files.fileUpload[0].filename,
+      fileUpload:
+        req?.files?.fileUpload && req?.files?.fileUpload[0]
+          ? req?.files?.fileUpload[0].filename
+          : "",
     };
 
     //save the lead in db
@@ -236,13 +242,13 @@ exports.edit = async (req, res, next) => {
     //   // fileUpload
     // }
     if (req.file) {
-      const image = req.file;
-      payload[`image`] = image.filename;
+      const image = req?.file?.filename;
+      payload[`image`] = image;
     }
 
     if (req.file) {
-      const fileUpload = req.file;
-      payload[`fileUpload`] = fileUpload.filename;
+      const fileUpload = req?.file?.filename;
+      payload[`fileUpload`] = fileUpload;
     }
     // fileUpload
     // if (req.file) {

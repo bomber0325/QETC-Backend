@@ -13,7 +13,7 @@ exports.create = async (req, res, next) => {
     console.log("req file", req.file);
     //create new record in db
     let university = {
-      image: req.file.filename,
+      image: req?.file?.filename,
       name: req.body.name,
       type: req.body.type,
       counserllerName: req.body.counserllerName,
@@ -112,8 +112,8 @@ exports.edit = async (req, res, next) => {
   try {
     let payload = req.body;
     if (req.file) {
-      const image = req.file;
-      payload[`logo`] = image.filename;
+      const image = req?.file?.filename;
+      payload[`logo`] = image;
     }
     console.log("payload", req.file, req.file);
     const university = await University.update(

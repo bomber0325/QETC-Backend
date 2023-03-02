@@ -14,7 +14,7 @@ exports.createLead = async (req, res, next) => {
     //
 
     let lead = {
-      image: req.file.filename,
+      image: req?.file?.filename,
       name: req.body.name,
       passportNo: req.body.passportNo,
       leadGroup: req.body.leadGroup,
@@ -181,8 +181,8 @@ exports.edit = async (req, res, next) => {
   try {
     let payload = req.body;
     if (req.file) {
-      const image = req.file;
-      payload[`logo`] = image.filename;
+      const image = req?.file?.filename;
+      payload[`logo`] = image;
     }
     const lead = await Lead.update(
       // Values to update
