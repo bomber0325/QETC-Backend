@@ -1,5 +1,5 @@
 const db = require("../../models");
-const { ApplicationModuleStatus } = db;
+const { ApplicationModuleStatus, Branch } = db;
 const Applicants = db.Applicants;
 const ApplicationDetails = db.ApplicationDetails;
 const Activity = db.Activity;
@@ -168,6 +168,7 @@ exports.listApplicants = async (req, res, next) => {
               // as: "status",
               // foreignKey: "sssss",
             },
+            Branch,
           ],
         },
       ],

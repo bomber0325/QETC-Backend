@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       ApplicationDetails.belongsTo(models.ApplicationModuleStatus, {
         foreignKey: "status",
       });
+      ApplicationDetails.belongsTo(models.Branch, {
+        foreignKey: "branchID",
+      });
     }
   }
   ApplicationDetails.init(
