@@ -5,11 +5,21 @@ const Activity = db.Activity;
 // create Currency
 exports.create = async (req, res, next) => {
   try {
-    let payload = req.body;
+    let { iso, name, exRate, status } = req.body;
 
-    console.log("payload of create currency", payload);
+    console.log("payload of create currency", {
+      iso,
+      name,
+      exRate: +exRate,
+      status: +status,
+    });
     //save the currency in db
-    let currency = await Currency.create(payload);
+    let currency = await Currency.create({
+      iso,
+      name,
+      exRate: +exRate,
+      status: +status,
+    });
 
     await Activity.create({ action: "New Currency created", userId: 1 });
 
