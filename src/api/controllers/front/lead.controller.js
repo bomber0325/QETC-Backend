@@ -23,7 +23,7 @@ exports.createLead = async (req, res, next) => {
       email: req.body.email,
       refferalName: req.body.refferalName,
       refferalEmail: req.body.refferalEmail,
-      statusID: 1,
+      // statusID: 1,
     };
 
     //save the lead in db
