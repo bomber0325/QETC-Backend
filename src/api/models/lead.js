@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       passportNo: DataTypes.INTEGER,
       leadGroup: DataTypes.STRING,
       country: DataTypes.STRING,
-      phoneNo: DataTypes.INTEGER,
+      phoneNo: DataTypes.STRING,
       email: DataTypes.STRING,
       refferalName: DataTypes.STRING,
       refferalEmail: DataTypes.STRING,
