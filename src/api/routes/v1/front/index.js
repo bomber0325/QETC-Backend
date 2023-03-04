@@ -23,6 +23,10 @@ const applicationModuleStatus = require("./applicationmodulestatus.route");
 const leadsManagmentModuleStatus = require("./leadsmanagmentmodulestatus.route");
 const invoiceModuleStatus = require("./invoicemodulestatus.route");
 const commissionInvoice = require("./commissioninvoice.route");
+const sales = require("./sales.route");
+const costofsales = require("./costofsales.route");
+const expenses = require("./expenses.route");
+const depitandcredit = require("./depitandcredit.route");
 
 const router = express.Router();
 
@@ -50,6 +54,10 @@ router.use("/applicationmodulestatus", applicationModuleStatus);
 router.use("/leadsmanagmentmodulestatus", leadsManagmentModuleStatus);
 router.use("/invoicemodulestatus", invoiceModuleStatus);
 router.use("/commissioninvoice", commissionInvoice);
+router.use("/sales", sales);
+router.use("/costofsales", costofsales);
+router.use("/expenses", expenses);
+router.use("/depitandcredit", depitandcredit);
 
 // currencieRoutes;
 module.exports = router;
