@@ -14,6 +14,7 @@ exports.create = async (req, res, next) => {
     //create new record in db
     let university = {
       image: req?.file?.filename,
+      logo: req?.file?.filename,
       name: req.body.name,
       type: req.body.type,
       counserllerName: req.body.counserllerName,

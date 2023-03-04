@@ -8,10 +8,10 @@ const { Branch, Programme, University } = db;
 // create lead
 exports.createLead = async (req, res, next) => {
   try {
-    console.log("Req.body Lead =====>", req.body);
-    console.log("Req.body Lead =====>", req.file);
+    // console.log("Req.body Lead =====>", req.body);
 
     //
+    console.log("Req.file Lead =====>", req.file);
 
     let lead = {
       image: req?.file?.filename,
@@ -52,7 +52,7 @@ exports.createLead = async (req, res, next) => {
       message: "Lead created successfully",
     });
   } catch (err) {
-    console.log("Error handling =>", err);
+    console.log("Error from Lead Create handling =>", err);
     next();
   }
 };
