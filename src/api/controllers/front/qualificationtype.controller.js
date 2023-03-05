@@ -16,7 +16,7 @@ exports.createQualificationType = async (req, res, next) => {
     qualificationType = await QualificationType.create(qualificationType);
     await Activity.create({
       action: "New qualificationType Created",
-      userId: 1,
+      name: payload.Uname, role: payload.role
     });
 
     return res.json({
@@ -102,7 +102,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New qualificationType updated",
-      userId: 1,
+      name: payload.Uname, role: payload.role
     });
 
     return res.send({
@@ -125,7 +125,7 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " qualificationType deleted",
-        userId: 1,
+        name: payload.Uname, role: payload.role
       });
 
       if (qualificationType)

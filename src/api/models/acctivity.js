@@ -9,13 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Activity.hasOne(models.Users, { foreignKey: "userId" });
-      Activity.belongsTo(models.Users, { foreignKey: "userID" });
+      Activity.hasOne(models.Users, { foreignKey: "userId" });
     }
   }
   Activity.init(
     {
       action: DataTypes.STRING,
+      name: DataTypes.STRING,
+      role: DataTypes.STRING
     },
     {
       sequelize,

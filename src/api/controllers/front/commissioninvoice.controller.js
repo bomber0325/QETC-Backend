@@ -23,7 +23,7 @@ exports.create = async (req, res, next) => {
     commissionInvoice = await CommissionInvoice.create(commissionInvoice);
     await Activity.create({
       action: "New commissionInvoice Created",
-      userId: 1,
+      name: payload.Uname, role: payload.role
     });
 
     return res.json({

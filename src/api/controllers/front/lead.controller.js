@@ -23,8 +23,9 @@ exports.createLead = async (req, res, next) => {
       email: req.body.email,
       refferalName: req.body.refferalName,
       refferalEmail: req.body.refferalEmail,
-      // statusID: 1,
     };
+
+
 
     //save the lead in db
     lead = await Lead.create(lead);
@@ -43,7 +44,7 @@ exports.createLead = async (req, res, next) => {
     };
     programmeDetails = await ProgrammeDetails.create(programmeDetails);
 
-    await Activity.create({ action: "new lead created", userId: 1 });
+    await Activity.create({ action: "new lead created", name: lead.Uname, role: lead.role });
 
     return res.json({
       success: true,
@@ -81,6 +82,7 @@ exports.listLead = async (req, res, next) => {
       page = Math.ceil(total / limit);
 
     //  console.log("filter",filter)
+    console.log("filter", filter, page, limit);
     const faqs = await Lead.findAll({
       order: [["updatedAt", "DESC"]],
       offset: limit * (page - 1),
@@ -104,6 +106,7 @@ exports.listLead = async (req, res, next) => {
         University,
       ],
     });
+
     // console.log("faqs", faqs);
     // res.send(uni);
     return res.send({
@@ -213,7 +216,7 @@ exports.edit = async (req, res, next) => {
       },
     });
 
-    await Activity.create({ action: "new lead updated", userId: 1 });
+    await Activity.create({ action: "new lead updated", name: payload.Uname, role: payload.role });
 
     return res.send({
       success: true,
@@ -236,7 +239,7 @@ exports.delete = async (req, res, next) => {
       });
       const lead = await Lead.destroy({ where: { id: id } });
 
-      await Activity.create({ action: "new lead deleted", userId: 1 });
+      await Activity.create({ action: "new lead deleted", name: payload.Uname, role: payload.role });
 
       if (lead)
         return res.send({

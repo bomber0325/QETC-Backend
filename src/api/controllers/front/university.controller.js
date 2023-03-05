@@ -42,7 +42,7 @@ exports.create = async (req, res, next) => {
       campus = await Campus.create(campus);
     });
 
-    await Activity.create({ action: "New University Created", userId: 1 });
+    await Activity.create({ action: "New University Created", name: payload.Uname, role: payload.role });
     return res.send({
       success: true,
       data: university,
@@ -152,7 +152,7 @@ exports.edit = async (req, res, next) => {
       );
     });
 
-    await Activity.create({ action: "University updated", userId: 1 });
+    await Activity.create({ action: "University updated", name: payload.Uname, role: payload.role });
     return res.send({
       success: true,
       message: "University updated successfully",
@@ -173,7 +173,7 @@ exports.delete = async (req, res, next) => {
         where: { UniversityId: id },
       });
 
-      await Activity.create({ action: "University deleted", userId: 1 });
+      await Activity.create({ action: "University deleted", name: payload.Uname, role: payload.role });
       if (university)
         return res.send({
           success: true,

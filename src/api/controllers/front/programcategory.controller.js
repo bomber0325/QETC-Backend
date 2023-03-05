@@ -14,7 +14,7 @@ exports.createProgramCategory = async (req, res, next) => {
 
     //save the programCategory in db
     programCategory = await ProgramCategory.create(programCategory);
-    await Activity.create({ action: "New programCategory Created", userId: 1 });
+    await Activity.create({ action: "New programCategory Created", name: payload.Uname, role: payload.role });
 
     return res.json({
       success: true,
@@ -97,7 +97,7 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-    await Activity.create({ action: "New programCategory updated", userId: 1 });
+    await Activity.create({ action: "New programCategory updated", name: payload.Uname, role: payload.role});
 
     return res.send({
       success: true,
@@ -117,7 +117,7 @@ exports.delete = async (req, res, next) => {
       const programCategory = await ProgramCategory.destroy({
         where: { id: id },
       });
-      await Activity.create({ action: " programCategory deleted", userId: 1 });
+      await Activity.create({ action: " programCategory deleted", name: payload.Uname, role: payload.role });
 
       if (programCategory)
         return res.send({

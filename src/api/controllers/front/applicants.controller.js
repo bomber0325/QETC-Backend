@@ -60,7 +60,7 @@ exports.createApplicant = async (req, res, next) => {
     };
     applicantDetails = await ApplicationDetails.create(applicantDetails);
 
-    await Activity.create({ action: "new applicant created", userId: 1 });
+    await Activity.create({ action: "new applicant created", name: payload.Uname, role: payload.role  });
 
     return res.json({
       success: true,
@@ -130,14 +130,11 @@ exports.createApplicant = async (req, res, next) => {
 // };
 
 exports.listApplicants = async (req, res, next) => {
-  // console.log("req.query",req.query);
-  console.log("hhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiii saqib");
   try {
     const uni = await Applicants.findAndCountAll();
     let { page, limit, name } = req.query;
-
     console.log("unitt", uni.count);
-    console.log("req.queryy", req.query); //name
+    console.log("req.queryy", req.query); 
     const filter = {};
 
     page = page !== undefined && page !== "" ? parseInt(page) : 1;

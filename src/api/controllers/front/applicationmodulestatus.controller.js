@@ -18,7 +18,7 @@ exports.createApplicationModuleStatus = async (req, res, next) => {
     );
     await Activity.create({
       action: "New applicationModuleStatus Created",
-      userId: 1,
+      name: payload.Uname, role: payload.role
     });
 
     return res.json({

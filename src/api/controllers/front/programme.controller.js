@@ -22,7 +22,7 @@ exports.createProgramme = async (req, res, next) => {
 
     //save the programme in db
     programme = await Programme.create(programme);
-    await Activity.create({ action: "New programme Created", userId: 1 });
+    await Activity.create({ action: "New programme Created", name: payload.Uname, role: payload.role });
 
     return res.json({
       success: true,
@@ -106,7 +106,7 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-    await Activity.create({ action: "New programme updated", userId: 1 });
+    await Activity.create({ action: "New programme updated", name: payload.Uname, role: payload.role });
 
     return res.send({
       success: true,
@@ -124,7 +124,7 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       const programme = await Programme.destroy({ where: { id: id } });
-      await Activity.create({ action: " programme deleted", userId: 1 });
+      await Activity.create({ action: " programme deleted", name: payload.Uname, role: payload.role });
 
       if (programme)
         return res.send({

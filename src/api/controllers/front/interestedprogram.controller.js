@@ -16,7 +16,7 @@ exports.createInterestedProgram = async (req, res, next) => {
     interestedprogram = await InterestedProgram.create(interestedprogram);
     await Activity.create({
       action: "New interestedprogram Created",
-      userId: 1,
+      name: payload.Uname, role: payload.role
     });
 
     return res.json({
@@ -102,7 +102,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New interestedprogram updated",
-      userId: 1,
+      name: payload.Uname, role: payload.role
     });
 
     return res.send({
@@ -125,7 +125,7 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " interestedprogram deleted",
-        userId: 1,
+        name: payload.Uname, role: payload.role
       });
 
       if (interestedprogram)

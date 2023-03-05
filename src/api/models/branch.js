@@ -18,9 +18,6 @@ module.exports = (sequelize, DataTypes) => {
       Branch.hasMany(models.Lead, {
         foreignKey: "branchID",
       });
-      Branch.hasMany(models.Users, {
-        foreignKey: "branchID",
-      });
     }
   }
   Branch.init(

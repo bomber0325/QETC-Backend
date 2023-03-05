@@ -8,7 +8,7 @@ exports.create = async (req, res, next) => {
     let payload = req.body;
     //save the branch in db
     let branch = await Branch.create(payload);
-    await Activity.create({ action: "Branch created", userId: 1 });
+    await Activity.create({ action: "Branch created", name: payload.Uname, role: payload.role });
 
     return res.json({
       success: true,

@@ -16,7 +16,7 @@ exports.createLeadGroup = async (req, res, next) => {
     leadgroup = await LeadGroup.create(leadgroup);
     await Activity.create({
       action: "New leadgroup Created",
-      userId: 1,
+      name: payload.Uname, role: payload.role
     });
 
     return res.json({
@@ -102,7 +102,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New leadgroup updated",
-      userId: 1,
+      name: payload.Uname, role: payload.role
     });
 
     return res.send({
@@ -125,7 +125,7 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " leadgroup deleted",
-        userId: 1,
+        name: payload.Uname, role: payload.role
       });
 
       if (leadgroup)

@@ -14,7 +14,7 @@ exports.createProgramLevel = async (req, res, next) => {
 
     //save the programLevel in db
     programLevel = await ProgramLevel.create(programLevel);
-    await Activity.create({ action: "New programLevel Created", userId: 1 });
+    await Activity.create({ action: "New programLevel Created", name: payload.Uname, role: payload.role });
 
     return res.json({
       success: true,
@@ -97,7 +97,7 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-    await Activity.create({ action: "New programLevel updated", userId: 1 });
+    await Activity.create({ action: "New programLevel updated", name: payload.Uname, role: payload.role });
 
     return res.send({
       success: true,
@@ -115,7 +115,7 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       const programLevel = await ProgramLevel.destroy({ where: { id: id } });
-      await Activity.create({ action: " programLevel deleted", userId: 1 });
+      await Activity.create({ action: " programLevel deleted", name: payload.Uname, role: payload.role });
 
       if (programLevel)
         return res.send({

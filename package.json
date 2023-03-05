@@ -11,7 +11,7 @@
     "yarn": "*"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production pm2 start ./src/index.js -i max",
+    "start": "cross-env NODE_ENV=development pm2 start ./src/index.js -i max",
     "dev": "nodemon ./src/index.js",
     "pm2": "pm2 start ./src/index.js --name=Qetc",
     "pm2-restart": "pm2 restart Qetc",
@@ -60,6 +60,7 @@
     "slugify": "^1.6.5"
   },
   "devDependencies": {
+    "nodemon": "^2.0.21",
     "sequelize-cli": "^6.6.0"
   }
 }
