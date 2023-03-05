@@ -183,7 +183,7 @@ exports.edit = async (req, res, next) => {
     let payload = req.body;
     if (req.file) {
       const image = req?.file?.filename;
-      payload[`logo`] = image;
+      payload[`image`] = image;
     }
     const lead = await Lead.update(
       // Values to update

@@ -9,8 +9,9 @@ exports.createApplicant = async (req, res, next) => {
   console.log("applicantsid", Applicants);
 
   try {
-    console.log("Req.body applicants =====>", req.body);
+    // console.log("Req.body applicants =====>", req.body);
     console.log("req.files", req.files ? req.files : "!No Files!");
+    console.log("req.file", req.file ? req.file : "!No file!");
 
     let applicants = {
       fullName: req.body.fullName,
@@ -33,7 +34,7 @@ exports.createApplicant = async (req, res, next) => {
     //save the lead in db
     applicants = await Applicants.create(applicants);
     // let applicantsId= applicants.dataValues.id;
-    console.log("applicantsid", applicants.dataValues.id);
+    // console.log("applicantsid", applicants.dataValues.id);
     //
 
     let applicantDetails = {
@@ -244,13 +245,19 @@ exports.edit = async (req, res, next) => {
 
     //   // fileUpload
     // }
-    if (req.file) {
-      const image = req?.file?.filename;
+    if (req.files) {
+      const image =
+        req?.files?.image && req?.files?.image[0]
+          ? req?.files?.image[0].filename
+          : "";
       payload[`image`] = image;
     }
 
     if (req.file) {
-      const fileUpload = req?.file?.filename;
+      const fileUpload =
+        req?.files?.fileUpload && req?.files?.fileUpload[0]
+          ? req?.files?.fileUpload[0].filename
+          : "";
       payload[`fileUpload`] = fileUpload;
     }
     // fileUpload
