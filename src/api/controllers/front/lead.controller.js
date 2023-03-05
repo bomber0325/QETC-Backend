@@ -266,7 +266,11 @@ exports.get = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
-      const lead = await Lead.findByPk(id);
+      const lead = await Lead.findOne({
+        where: {
+          email: req.body.mail,
+        },
+      });
       console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
       console.log("lead id ==>", lead.dataValues.id);
       // const programeTable = await ProgrammeDetails.findByPk(id);

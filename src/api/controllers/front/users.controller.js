@@ -1,5 +1,7 @@
 const db = require("../../models");
 const Users = db.Users;
+const Lead = db.Lead;
+const ProgrammeDetails = db.ProgrameDetails;
 const Activity = db.Activity;
 
 const Op = db.Sequelize.Op;
@@ -198,42 +200,39 @@ exports.login = async (req, res) => {
         token: "Benear " + token
       });
     } else {
-      const user = await Users.findOne({
+      const lead = await Lead.findOne({
         where: {
           email: req.body.mail,
         },
       });
-
-      if (!user || user.role != "leads") {
-        return res.status(404).send({ message: "User Not found." });
-      }
-
-      const passwordIsValid = bcrypt.compareSync(
-        req.body.password,
-        user.password
-      );
-
-      if (!passwordIsValid) {
-        return res.status(401).send({
-          message: "Invalid Password!",
+      
+      console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
+      console.log("lead id ==>", lead.dataValues.id);
+      // const programeTable = await ProgrammeDetails.findByPk(id);
+      lead.dataValues.programmeDetails = await ProgrammeDetails.findOne({
+        where: {
+          leadId: lead.dataValues.id,
+        },
+        // include: [
+        //   {
+        //     model: ProgrammeDetails,
+        //     as: "ProgrameDetail",
+        //   },
+        // ],
+      });
+      console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
+      if (lead)
+        return res.json({
+          success: true,
+          message: "lead retrieved successfully",
+          lead,
+          // programeTable,
         });
-      }
-
-      await Activity.create({ action: "Leads logged in", name: user.name, role: user.role });
-
-
-      const token = jwt.sign({ id: user.email }, "JWT_SECRET", {
-        expiresIn: 86400, // 24 hours
-      });
-
-
-      return res.status(200).send({
-        id: user.id,
-        username: user.name,
-        email: user.email,
-        roles: user.role,
-        token: "Benear " + token
-      });
+      else
+        return res.status(400).send({
+          success: false,
+          message: "lead not found for given Id",
+        });
     }
 
   } catch (error) {
