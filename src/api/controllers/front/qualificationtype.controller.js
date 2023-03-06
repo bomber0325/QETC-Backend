@@ -6,6 +6,7 @@ exports.createQualificationType = async (req, res, next) => {
   try {
     console.log("Req.body qualificationType controller =====>", req.body);
     //
+    let payload = req.body;
 
     let qualificationType = {
       name: req.body.name,
@@ -128,6 +129,8 @@ exports.edit = async (req, res, next) => {
 // API to delete qualificationType
 exports.delete = async (req, res, next) => {
   try {
+    let payload = req.body;
+
     const { id } = req.params;
     if (id) {
       const qualificationType = await QualificationType.destroy({

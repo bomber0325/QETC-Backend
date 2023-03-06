@@ -5,6 +5,8 @@ const { University, InvoiceModuleStatus, Branch } = db;
 // create program categorys
 exports.create = async (req, res, next) => {
   try {
+    let payload = req.body;
+
     console.log("Req.body commissionInvoice controller =====>", req.body);
     //
 

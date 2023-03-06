@@ -251,6 +251,8 @@ exports.edit = async (req, res, next) => {
 // API to delete lead
 exports.delete = async (req, res, next) => {
   try {
+    let payload = req.body;
+
     const { id } = req.params;
     if (id) {
       await ProgrammeDetails.destroy({
@@ -293,13 +295,14 @@ exports.get = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       // <<<<<<< HEAD
-      const lead = await Lead.findOne({
-        where: {
-          email: req.body.mail,
-        },
-      });
+      // *** Fix this
+      // const lead = await Lead.findOne({
+      //   where: {
+      //     email: req.body.mail,
+      //   },
+      // });
       // =======
-      //       const lead = await Lead.findByPk(id);
+      const lead = await Lead.findByPk(id);
       // >>>>>>> main
       console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
       console.log("lead id ==>", lead.dataValues.id);

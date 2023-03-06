@@ -4,6 +4,7 @@ const Activity = db.Activity;
 // create program categorys
 exports.createApplicationModuleStatus = async (req, res, next) => {
   try {
+    let payload = req.body;
     console.log("Req.body applicationModuleStatus controller =====>", req.body);
     //
 

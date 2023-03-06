@@ -9,6 +9,7 @@ exports.createLeadsManagmentModuleStatus = async (req, res, next) => {
       req.body
     );
     //
+    let payload = req.body;
 
     let leadsManagmentModuleStatus = {
       name: req.body.name,
@@ -133,6 +134,7 @@ exports.edit = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
+    let payload = req.body;
     if (id) {
       const leadsManagmentModuleStatus =
         await LeadsManagmentModuleStatus.destroy({

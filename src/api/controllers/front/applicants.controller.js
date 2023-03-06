@@ -9,6 +9,7 @@ exports.createApplicant = async (req, res, next) => {
   console.log("applicantsid", Applicants);
 
   try {
+    let payload = req.body;
     // <<<<<<< HEAD
     //     console.log("Req.body applicants =====>", req.body);
     //     console.log("req.files", req.files ? req.files : "!No Files!");

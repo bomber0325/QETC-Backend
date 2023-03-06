@@ -14,6 +14,8 @@ exports.create = async (req, res, next) => {
 
     //     await Activity.create({ action: "New Currency created", name: payload.Uname, role: payload.role});
     //     =======
+    let payload = req.body;
+
     let { iso, name, exRate, status } = req.body;
 
     console.log("payload of create currency", {

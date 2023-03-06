@@ -117,6 +117,8 @@ exports.edit = async (req, res, next) => {
 // API to delete property
 exports.delete = async (req, res, next) => {
   try {
+    let payload = req.body;
+
     const { id } = req.params;
     if (id) {
       const property = await Property.destroy({ where: { id: id } });

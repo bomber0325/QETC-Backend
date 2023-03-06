@@ -6,6 +6,7 @@ exports.createInvoiceModuleStatus = async (req, res, next) => {
   try {
     console.log("Req.body invoiceModuleStatus controller =====>", req.body);
     //
+    let payload = req.body;
 
     let invoiceModuleStatus = {
       name: req.body.name,
@@ -128,6 +129,8 @@ exports.edit = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
+    let payload = req.body;
+
     if (id) {
       const invoiceModuleStatus = await InvoiceModuleStatus.destroy({
         where: { id: id },

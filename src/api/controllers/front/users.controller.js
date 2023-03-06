@@ -131,6 +131,8 @@ exports.edit = async (req, res, next) => {
 // API to delete branch
 exports.delete = async (req, res, next) => {
   try {
+    let payload = req.body;
+
     const { id } = req.params;
     if (id) {
       const user = await Users.destroy({ where: { id: id } });

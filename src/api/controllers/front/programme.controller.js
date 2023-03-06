@@ -4,6 +4,7 @@ const Activity = db.Activity;
 // create programms
 exports.createProgramme = async (req, res, next) => {
   try {
+    let payload = req.body;
     console.log("Req.body programme controller =====>", req.body);
     //
 
@@ -56,8 +57,8 @@ exports.listProgrammes = async (req, res, next) => {
 
     let { page, limit, name } = req.query;
 
-    console.log("unitt", uni.count);
-    console.log("req.queryy", req.query); //name
+    // console.log("unitt", uni.count);
+    // console.log("req.queryy", req.query); //name
     const filter = {};
 
     page = page !== undefined && page !== "" ? parseInt(page) : 1;
@@ -72,14 +73,14 @@ exports.listProgrammes = async (req, res, next) => {
     if (page > Math.ceil(total / limit) && total > 0)
       page = Math.ceil(total / limit);
 
-    console.log("filter", filter);
+    // console.log("filter", filter);
     const faqs = await Programme.findAll({
       order: [["updatedAt", "DESC"]],
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
     });
-    console.log("faqs", faqs);
+    // console.log("faqs", faqs);
     // res.send(uni);
     return res.send({
       success: true,
@@ -115,11 +116,14 @@ exports.edit = async (req, res, next) => {
       }
     );
 
-    await Activity.create({
-      action: "New programme updated",
-      name: payload.Uname,
-      role: payload.role,
-    });
+    console.log(
+      "Activity from controll",
+      await Activity.create({
+        action: "New programme updated",
+        name: payload.Uname,
+        role: payload.role,
+      })
+    );
     // =======
     //     await Activity.create({ action: "New programme updated", userId: 1 });
     // >>>>>>> main
@@ -137,6 +141,7 @@ exports.edit = async (req, res, next) => {
 // API to delete programme
 exports.delete = async (req, res, next) => {
   try {
+    let payload = req.body;
     const { id } = req.params;
     if (id) {
       const programme = await Programme.destroy({ where: { id: id } });

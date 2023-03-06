@@ -4,6 +4,8 @@ const Activity = db.Activity;
 // create program categorys
 exports.createInterestedProgram = async (req, res, next) => {
   try {
+    let payload = req.body;
+
     console.log("Req.body interestedprogram controller =====>", req.body);
     //
 
@@ -128,6 +130,8 @@ exports.edit = async (req, res, next) => {
 // API to delete interestedprogram
 exports.delete = async (req, res, next) => {
   try {
+    let payload = req.body;
+
     const { id } = req.params;
     if (id) {
       const interestedprogram = await InterestedProgram.destroy({

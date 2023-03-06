@@ -6,7 +6,7 @@ exports.createProgramCategory = async (req, res, next) => {
   try {
     console.log("Req.body programCategory controller =====>", req.headers);
     //
-
+    let payload = req.body;
     let programCategory = {
       name: req.body.name,
       Color: req.body.Color,
@@ -47,8 +47,8 @@ exports.listProgramCategorys = async (req, res, next) => {
     const uni = await ProgramCategory.findAndCountAll();
     let { page, limit, name } = req.query;
 
-    console.log("unitt", uni.count);
-    console.log("req.queryy", req.query); //name
+    // console.log("unitt", uni.count);
+    // console.log("req.queryy", req.query); //name
     const filter = {};
 
     page = page !== undefined && page !== "" ? parseInt(page) : 1;
@@ -63,14 +63,14 @@ exports.listProgramCategorys = async (req, res, next) => {
     if (page > Math.ceil(total / limit) && total > 0)
       page = Math.ceil(total / limit);
 
-    console.log("filter", filter);
+    // console.log("filter", filter);
     const faqs = await ProgramCategory.findAll({
       order: [["updatedAt", "DESC"]],
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
     });
-    console.log("faqs", faqs);
+    // console.log("faqs", faqs);
     // res.send(uni);
     return res.send({
       success: true,
@@ -128,6 +128,8 @@ exports.edit = async (req, res, next) => {
 // API to delete programCategory
 exports.delete = async (req, res, next) => {
   try {
+    let payload = req.body;
+
     const { id } = req.params;
     if (id) {
       const programCategory = await ProgramCategory.destroy({

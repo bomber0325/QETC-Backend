@@ -11,6 +11,7 @@ exports.create = async (req, res, next) => {
   try {
     console.log("REq.body", req.body);
     console.log("req file", req.file);
+    let payload = req.body;
     //create new record in db
     let university = {
       image: req?.file?.filename,
@@ -124,7 +125,7 @@ exports.edit = async (req, res, next) => {
       const image = req?.file?.filename;
       payload[`logo`] = image;
     }
-    console.log("payload", req.file, req.file);
+    console.log("payloadDd", req.file, payload);
     const university = await University.update(
       // Values to update
       payload,
@@ -137,7 +138,7 @@ exports.edit = async (req, res, next) => {
     );
 
     const newArr = JSON.parse(req.body.campuses);
-    console.log(payload, newArr);
+    // console.log(payload, newArr);
     const mappedArr = newArr.map(async (ele, ind) => {
       let campus = {
         name: ele.name,
@@ -148,7 +149,7 @@ exports.edit = async (req, res, next) => {
         isMain: ele.isMain,
         UniversityId: payload.id,
       };
-      console.log("campssssssssa", campus);
+      // console.log("campssssssssa", campus);
       campus = await Campus.update(
         // Values to update
         campus,
@@ -182,6 +183,7 @@ exports.edit = async (req, res, next) => {
 // API to delete university
 exports.delete = async (req, res, next) => {
   try {
+    let payload = req.body;
     const { id } = req.params;
     if (id) {
       const university = await University.destroy({ where: { id: id } });

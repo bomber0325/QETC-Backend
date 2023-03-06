@@ -6,6 +6,7 @@ exports.createUniversityType = async (req, res, next) => {
   try {
     console.log("Req.body universitytype controller =====>", req.body);
     //
+    let payload = req.body;
 
     let universitytype = {
       name: req.body.name,
@@ -128,6 +129,8 @@ exports.edit = async (req, res, next) => {
 // API to delete universitytype
 exports.delete = async (req, res, next) => {
   try {
+    let payload = req.body;
+
     const { id } = req.params;
     if (id) {
       const universitytype = await UniversityType.destroy({

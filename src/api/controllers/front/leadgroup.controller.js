@@ -6,6 +6,7 @@ exports.createLeadGroup = async (req, res, next) => {
   try {
     console.log("Req.body leadgroup controller =====>", req.body);
     //
+    let payload = req.body;
 
     let leadgroup = {
       name: req.body.name,
@@ -129,6 +130,8 @@ exports.edit = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
+    let payload = req.body;
+
     if (id) {
       const leadgroup = await LeadGroup.destroy({
         where: { id: id },
