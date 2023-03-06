@@ -16,7 +16,12 @@ exports.createUniversityType = async (req, res, next) => {
     universitytype = await UniversityType.create(universitytype);
     await Activity.create({
       action: "New universitytype Created",
-      name: payload.Uname, role: payload.role
+
+      name: payload.Uname,
+      role: payload.role,
+      // =======
+      //       userId: 1,
+      // >>>>>>> main
     });
 
     return res.json({
@@ -102,7 +107,12 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New universitytype updated",
-      name: payload.Uname, role: payload.role
+
+      name: payload.Uname,
+      role: payload.role,
+      // =======
+      //       userId: 1,
+      // >>>>>>> main
     });
 
     return res.send({
@@ -125,7 +135,12 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " universitytype deleted",
-        name: payload.Uname, role: payload.role
+
+        name: payload.Uname,
+        role: payload.role,
+        // =======
+        //         userId: 1,
+        // >>>>>>> main
       });
 
       if (universitytype)

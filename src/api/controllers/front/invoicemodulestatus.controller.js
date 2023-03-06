@@ -16,7 +16,11 @@ exports.createInvoiceModuleStatus = async (req, res, next) => {
     invoiceModuleStatus = await InvoiceModuleStatus.create(invoiceModuleStatus);
     await Activity.create({
       action: "New invoiceModuleStatus Created",
-      name: payload.Uname, role: payload.role
+      name: payload.Uname,
+      role: payload.role,
+      // =======
+      //       userId: 1,
+      // >>>>>>> main
     });
 
     return res.json({
@@ -102,7 +106,12 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New invoiceModuleStatus updated",
-      name: payload.Uname, role: payload.role
+
+      name: payload.Uname,
+      role: payload.role,
+      // =======
+      //       userId: 1,
+      // >>>>>>> main
     });
 
     return res.send({
@@ -125,7 +134,12 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " invoiceModuleStatus deleted",
-        name: payload.Uname, role: payload.role
+
+        name: payload.Uname,
+        role: payload.role,
+        // =======
+        //         userId: 1,
+        // >>>>>>> main
       });
 
       if (invoiceModuleStatus)

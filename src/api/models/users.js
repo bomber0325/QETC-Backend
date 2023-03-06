@@ -11,18 +11,30 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // Users.belongsTo(models.Activity), { foreignKey: "userId" };
       // Users.belongsTo(models.Roles), { foreignKey: "roleId" };
+
+      Users.belongsTo(models.Branch, { foreignKey: "branchID" });
+      Users.hasMany(models.Activity, {
+        foreignKey: "userID",
+      });
     }
   }
   Users.init(
     {
       name: DataTypes.STRING,
       email: DataTypes.STRING,
-      [`number`]: DataTypes.INTEGER,
+      // <<<<<<< HEAD
+      //       [`number`]: DataTypes.INTEGER,
+      //       role: DataTypes.STRING,
+      //       branch: DataTypes.STRING,
+      //       position: DataTypes.STRING,
+      //       date: DataTypes.INTEGER,
+      //       =======
+      password: DataTypes.STRING,
+      [`number`]: DataTypes.STRING,
       role: DataTypes.STRING,
-      branch: DataTypes.STRING,
+      branchID: DataTypes.INTEGER,
       position: DataTypes.STRING,
       date: DataTypes.INTEGER,
-      password: DataTypes.STRING
     },
     {
       sequelize,

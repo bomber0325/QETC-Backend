@@ -18,7 +18,12 @@ exports.createApplicationModuleStatus = async (req, res, next) => {
     );
     await Activity.create({
       action: "New applicationModuleStatus Created",
-      name: payload.Uname, role: payload.role
+
+      name: payload.Uname,
+      role: payload.role,
+      // =======
+      //       userId: 1,
+      // >>>>>>> main
     });
 
     return res.json({
@@ -142,12 +147,10 @@ exports.delete = async (req, res, next) => {
           message: "applicationModuleStatus Page not found for given Id",
         });
     } else
-      return res
-        .status(400)
-        .send({
-          success: false,
-          message: "applicationModuleStatus Id is required",
-        });
+      return res.status(400).send({
+        success: false,
+        message: "applicationModuleStatus Id is required",
+      });
   } catch (error) {
     return next(error);
   }
@@ -175,12 +178,10 @@ exports.get = async (req, res, next) => {
           message: "applicationModuleStatus not found for given Id",
         });
     } else
-      return res
-        .status(400)
-        .send({
-          success: false,
-          message: "applicationModuleStatus Id is required",
-        });
+      return res.status(400).send({
+        success: false,
+        message: "applicationModuleStatus Id is required",
+      });
   } catch (error) {
     return next(error);
   }

@@ -14,6 +14,8 @@ exports.create = async (req, res, next) => {
     //create new record in db
     let university = {
       image: req?.file?.filename,
+      logo: req?.file?.filename,
+
       name: req.body.name,
       type: req.body.type,
       counserllerName: req.body.counserllerName,
@@ -42,7 +44,14 @@ exports.create = async (req, res, next) => {
       campus = await Campus.create(campus);
     });
 
-    await Activity.create({ action: "New University Created", name: payload.Uname, role: payload.role });
+    await Activity.create({
+      action: "New University Created",
+      name: payload.Uname,
+      role: payload.role,
+    });
+    // =======
+    //     await Activity.create({ action: "New University Created", userId: 1 });
+    // >>>>>>> main
     return res.send({
       success: true,
       data: university,
@@ -152,7 +161,14 @@ exports.edit = async (req, res, next) => {
       );
     });
 
-    await Activity.create({ action: "University updated", name: payload.Uname, role: payload.role });
+    await Activity.create({
+      action: "University updated",
+      name: payload.Uname,
+      role: payload.role,
+    });
+    // =======
+    //     await Activity.create({ action: "University updated", userId: 1 });
+    // >>>>>>> main
     return res.send({
       success: true,
       message: "University updated successfully",
@@ -173,7 +189,14 @@ exports.delete = async (req, res, next) => {
         where: { UniversityId: id },
       });
 
-      await Activity.create({ action: "University deleted", name: payload.Uname, role: payload.role });
+      await Activity.create({
+        action: "University deleted",
+        name: payload.Uname,
+        role: payload.role,
+      });
+      // =======
+      //       await Activity.create({ action: "University deleted", userId: 1 });
+      // >>>>>>> main
       if (university)
         return res.send({
           success: true,
