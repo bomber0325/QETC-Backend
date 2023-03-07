@@ -27,7 +27,7 @@ exports.create = async (req, res, next) => {
     await Activity.create({
       action: "User created",
       name: payload.Uname,
-      role: payload.role,
+      role: payload.Urole,
     });
     // =======
     //save the branch in db
@@ -112,7 +112,7 @@ exports.edit = async (req, res, next) => {
     await Activity.create({
       action: "User updated",
       name: payload.Uname,
-      role: payload.role,
+      role: payload.Urole,
     });
     // =======
     //     await Activity.create({ action: "User updated", userId: 1 });
@@ -139,7 +139,7 @@ exports.delete = async (req, res, next) => {
       await Activity.create({
         action: "User deleted",
         name: payload.Uname,
-        role: payload.role,
+        role: payload.Urole,
       });
       // =======
       //       await Activity.create({ action: "User deleted", userId: 1 });
