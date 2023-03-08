@@ -1,22 +1,22 @@
 {
   "development": {
     "username": "root",
-    "password": "Qetc@root@Safyiq@05336",
-    "database": "qetc",
+    "password": null,
+    "database": "Qetc",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "Qetc@root@Safyiq@05336",
-    "database": "qetc",
+    "password": null,
+    "database": "Qetc",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "Qetc@root@Safyiq@05336",
-    "database": "qetc",
+    "password": null,
+    "database": "Qetc",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }

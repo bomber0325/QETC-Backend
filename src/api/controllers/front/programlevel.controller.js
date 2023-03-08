@@ -6,7 +6,7 @@ exports.createProgramLevel = async (req, res, next) => {
   try {
     console.log("Req.body programLevel controller =====>", req.body);
     //
-    let payload = req.body;
+
     let programLevel = {
       name: req.body.name,
       Color: req.body.Color,
@@ -14,15 +14,7 @@ exports.createProgramLevel = async (req, res, next) => {
 
     //save the programLevel in db
     programLevel = await ProgramLevel.create(programLevel);
-
-    await Activity.create({
-      action: "New programLevel Created",
-      name: payload.Uname,
-      role: payload.role,
-    });
-    // =======
-    //     await Activity.create({ action: "New programLevel Created", userId: 1 });
-    // >>>>>>> main
+    await Activity.create({ action: "New programLevel Created", name: payload.Uname, role: payload.role });
 
     return res.json({
       success: true,
@@ -47,8 +39,8 @@ exports.listProgramLevels = async (req, res, next) => {
     const uni = await ProgramLevel.findAndCountAll();
     let { page, limit, name } = req.query;
 
-    // console.log("unitt", uni.count);
-    // console.log("req.queryy", req.query); //name
+    console.log("unitt", uni.count);
+    console.log("req.queryy", req.query); //name
     const filter = {};
 
     page = page !== undefined && page !== "" ? parseInt(page) : 1;
@@ -63,14 +55,14 @@ exports.listProgramLevels = async (req, res, next) => {
     if (page > Math.ceil(total / limit) && total > 0)
       page = Math.ceil(total / limit);
 
-    // console.log("filter", filter);
+    console.log("filter", filter);
     const faqs = await ProgramLevel.findAll({
       order: [["updatedAt", "DESC"]],
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
     });
-    // console.log("faqs", faqs);
+    console.log("faqs", faqs);
     // res.send(uni);
     return res.send({
       success: true,
@@ -95,59 +87,22 @@ exports.listProgramLevels = async (req, res, next) => {
 exports.edit = async (req, res, next) => {
   try {
     let payload = req.body;
-    console.log(payload);
     const programLevel = await ProgramLevel.update(
       // Values to update
       payload,
       {
         // Clause
         where: {
-          id: payload.ID,
+          id: payload.id,
         },
       }
     );
+    await Activity.create({ action: "New programLevel updated", name: payload.Uname, role: payload.role });
 
-    await Activity.create({
-      action: "New programLevel updated",
-      name: payload.Uname,
-      role: payload.role,
-    });
-    // =======
-    //     await Activity.create({ action: "New programLevel updated", userId: 1 });
-    // >>>>>>> main
-
-    page = page !== undefined && page !== "" ? parseInt(page) : 1;
-    limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
-
-    if (name) {
-      filter.name = { $LIKE: name, $options: "gi" };
-    }
-
-    const total = uni.count;
-
-    if (page > Math.ceil(total / limit) && total > 0)
-      page = Math.ceil(total / limit);
-
-    const faqs = await ProgramLevel.findAll({
-      order: [["updatedAt", "DESC"]],
-      offset: limit * (page - 1),
-      limit: limit,
-      where: filter,
-    });
-    console.log("faqs", faqs);
-    // res.send(uni);
     return res.send({
       success: true,
-      message: "program levels fetched successfully",
-      data: {
-        faqs,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
-        },
-      },
+      message: "programLevel updated successfully",
+      programLevel,
     });
   } catch (error) {
     return next(error);
@@ -157,59 +112,26 @@ exports.edit = async (req, res, next) => {
 // API to delete programLevel
 exports.delete = async (req, res, next) => {
   try {
-    let payload = req.body;
     const { id } = req.params;
     if (id) {
       const programLevel = await ProgramLevel.destroy({ where: { id: id } });
+      await Activity.create({ action: " programLevel deleted", name: payload.Uname, role: payload.role });
 
-      await Activity.create({
-        action: " programLevel deleted",
-        name: payload.Uname,
-        role: payload.role,
-      });
-      // =======
-      //       await Activity.create({ action: " programLevel deleted", userId: 1 });
-      // >>>>>>> main
-
-      const uni = await ProgramLevel.findAndCountAll();
-      let { page, limit, name } = req.query;
-      limit = 5;
-      const filter = {};
-  
-      page = page !== undefined && page !== "" ? parseInt(page) : 1;
-      limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
-  
-      if (name) {
-        filter.name = { $LIKE: name, $options: "gi" };
-      }
-  
-      const total = uni.count;
-  
-      if (page > Math.ceil(total / limit) && total > 0)
-        page = Math.ceil(total / limit);
-  
-      const faqs = await ProgramLevel.findAll({
-        order: [["updatedAt", "DESC"]],
-        offset: limit * (page - 1),
-        limit: limit,
-        where: filter,
-      });
-      console.log("faqs", faqs);
-      // res.send(uni);
-      return res.send({
-        success: true,
-        message: "program levels fetched successfully",
-        data: {
-          faqs,
-          pagination: {
-            page,
-            limit,
-            total,
-            pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
-          },
-        },
-      });
-    }
+      if (programLevel)
+        return res.send({
+          success: true,
+          message: "programLevel Page deleted successfully",
+          id,
+        });
+      else
+        return res.status(400).send({
+          success: false,
+          message: "programLevel Page not found for given Id",
+        });
+    } else
+      return res
+        .status(400)
+        .send({ success: false, message: "programLevel Id is required" });
   } catch (error) {
     return next(error);
   }

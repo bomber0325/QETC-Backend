@@ -4,7 +4,6 @@ const Activity = db.Activity;
 // create program categorys
 exports.createApplicationModuleStatus = async (req, res, next) => {
   try {
-    let payload = req.body;
     console.log("Req.body applicationModuleStatus controller =====>", req.body);
     //
 
@@ -19,12 +18,7 @@ exports.createApplicationModuleStatus = async (req, res, next) => {
     );
     await Activity.create({
       action: "New applicationModuleStatus Created",
-
-      name: payload.Uname,
-      role: payload.role,
-      // =======
-      //       userId: 1,
-      // >>>>>>> main
+      name: payload.Uname, role: payload.role
     });
 
     return res.json({
@@ -110,7 +104,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New applicationModuleStatus updated",
-      name: req.body.Uname, role: req.body.role,
+      userId: 1,
     });
 
     return res.send({
@@ -133,7 +127,7 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " applicationModuleStatus deleted",
-        name: req.body.Uname, role: req.body.role,
+        userId: 1,
       });
 
       if (applicationModuleStatus)
@@ -148,10 +142,12 @@ exports.delete = async (req, res, next) => {
           message: "applicationModuleStatus Page not found for given Id",
         });
     } else
-      return res.status(400).send({
-        success: false,
-        message: "applicationModuleStatus Id is required",
-      });
+      return res
+        .status(400)
+        .send({
+          success: false,
+          message: "applicationModuleStatus Id is required",
+        });
   } catch (error) {
     return next(error);
   }
@@ -179,10 +175,12 @@ exports.get = async (req, res, next) => {
           message: "applicationModuleStatus not found for given Id",
         });
     } else
-      return res.status(400).send({
-        success: false,
-        message: "applicationModuleStatus Id is required",
-      });
+      return res
+        .status(400)
+        .send({
+          success: false,
+          message: "applicationModuleStatus Id is required",
+        });
   } catch (error) {
     return next(error);
   }

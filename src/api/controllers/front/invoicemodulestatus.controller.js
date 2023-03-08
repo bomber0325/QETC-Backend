@@ -6,7 +6,6 @@ exports.createInvoiceModuleStatus = async (req, res, next) => {
   try {
     console.log("Req.body invoiceModuleStatus controller =====>", req.body);
     //
-    let payload = req.body;
 
     let invoiceModuleStatus = {
       name: req.body.name,
@@ -17,11 +16,7 @@ exports.createInvoiceModuleStatus = async (req, res, next) => {
     invoiceModuleStatus = await InvoiceModuleStatus.create(invoiceModuleStatus);
     await Activity.create({
       action: "New invoiceModuleStatus Created",
-      name: payload.Uname,
-      role: payload.role,
-      // =======
-      //       userId: 1,
-      // >>>>>>> main
+      name: payload.Uname, role: payload.role
     });
 
     return res.json({
@@ -107,12 +102,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New invoiceModuleStatus updated",
-
-      name: payload.Uname,
-      role: payload.role,
-      // =======
-      //       userId: 1,
-      // >>>>>>> main
+      name: payload.Uname, role: payload.role
     });
 
     return res.send({
@@ -129,20 +119,13 @@ exports.edit = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
-    let payload = req.body;
-
     if (id) {
       const invoiceModuleStatus = await InvoiceModuleStatus.destroy({
         where: { id: id },
       });
       await Activity.create({
         action: " invoiceModuleStatus deleted",
-
-        name: payload.Uname,
-        role: payload.role,
-        // =======
-        //         userId: 1,
-        // >>>>>>> main
+        name: payload.Uname, role: payload.role
       });
 
       if (invoiceModuleStatus)

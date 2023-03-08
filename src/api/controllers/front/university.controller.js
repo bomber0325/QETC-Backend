@@ -11,12 +11,9 @@ exports.create = async (req, res, next) => {
   try {
     console.log("REq.body", req.body);
     console.log("req file", req.file);
-    let payload = req.body;
     //create new record in db
     let university = {
       image: req?.file?.filename,
-      logo: req?.file?.filename,
-
       name: req.body.name,
       type: req.body.type,
       counserllerName: req.body.counserllerName,
@@ -45,14 +42,7 @@ exports.create = async (req, res, next) => {
       campus = await Campus.create(campus);
     });
 
-    await Activity.create({
-      action: "New University Created",
-      name: payload.Uname,
-      role: payload.role,
-    });
-    // =======
-    //     await Activity.create({ action: "New University Created", userId: 1 });
-    // >>>>>>> main
+    await Activity.create({ action: "New University Created", name: payload.Uname, role: payload.role });
     return res.send({
       success: true,
       data: university,
@@ -125,7 +115,7 @@ exports.edit = async (req, res, next) => {
       const image = req?.file?.filename;
       payload[`logo`] = image;
     }
-    console.log("payloadDd", req.file, payload);
+    console.log("payload", req.file, req.file);
     const university = await University.update(
       // Values to update
       payload,
@@ -138,7 +128,7 @@ exports.edit = async (req, res, next) => {
     );
 
     const newArr = JSON.parse(req.body.campuses);
-    // console.log(payload, newArr);
+    console.log(payload, newArr);
     const mappedArr = newArr.map(async (ele, ind) => {
       let campus = {
         name: ele.name,
@@ -149,7 +139,7 @@ exports.edit = async (req, res, next) => {
         isMain: ele.isMain,
         UniversityId: payload.id,
       };
-      // console.log("campssssssssa", campus);
+      console.log("campssssssssa", campus);
       campus = await Campus.update(
         // Values to update
         campus,
@@ -162,14 +152,7 @@ exports.edit = async (req, res, next) => {
       );
     });
 
-    await Activity.create({
-      action: "University updated",
-      name: payload.Uname,
-      role: payload.role,
-    });
-    // =======
-    //     await Activity.create({ action: "University updated", userId: 1 });
-    // >>>>>>> main
+    await Activity.create({ action: "University updated", name: payload.Uname, role: payload.role });
     return res.send({
       success: true,
       message: "University updated successfully",
@@ -183,7 +166,6 @@ exports.edit = async (req, res, next) => {
 // API to delete university
 exports.delete = async (req, res, next) => {
   try {
-    let payload = req.body;
     const { id } = req.params;
     if (id) {
       const university = await University.destroy({ where: { id: id } });
@@ -191,14 +173,7 @@ exports.delete = async (req, res, next) => {
         where: { UniversityId: id },
       });
 
-      await Activity.create({
-        action: "University deleted",
-        name: payload.Uname,
-        role: payload.role,
-      });
-      // =======
-      //       await Activity.create({ action: "University deleted", userId: 1 });
-      // >>>>>>> main
+      await Activity.create({ action: "University deleted", name: payload.Uname, role: payload.role });
       if (university)
         return res.send({
           success: true,
@@ -248,64 +223,5 @@ exports.get = async (req, res, next) => {
         .send({ success: false, message: "University Id is required" });
   } catch (error) {
     return next(error);
-  }
-};
-
-exports.search = async (req, res, next) => {
-  // console.log("req.query",req.query);
-  try {
-    const uni = await University.findAndCountAll();
-    let { page, limit } = req.query;
-    let { name } = req.body;
-
-    console.log(req.body);
-
-    const filter = {};
-
-    page = page !== undefined && page !== "" ? parseInt(page) : 1;
-    limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
-
-    if (name) {
-      filter.name = {
-        [Op.like]: "%" + name + "%",
-      };
-    }
-
-    const total = uni.count;
-
-    if (page > Math.ceil(total / limit) && total > 0)
-      page = Math.ceil(total / limit);
-
-    const faqs = await University.findAll({
-      // where: {
-      //   name: req.body.name
-      // },
-      order: [["updatedAt", "DESC"]],
-      offset: limit * (page - 1),
-      limit: limit,
-      where: filter,
-      include: [
-        {
-          model: Campus,
-          as: "Campuses",
-        },
-      ],
-    });
-
-    return res.send({
-      success: true,
-      message: "Universities fetched successfully",
-      data: {
-        faqs,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
-        },
-      },
-    });
-  } catch (err) {
-    res.send("University Error " + err);
   }
 };

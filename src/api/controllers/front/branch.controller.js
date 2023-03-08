@@ -8,15 +8,7 @@ exports.create = async (req, res, next) => {
     let payload = req.body;
     //save the branch in db
     let branch = await Branch.create(payload);
-
-    await Activity.create({
-      action: "Branch created",
-      name: payload.Uname,
-      role: payload.role,
-    });
-    // =======
-    //     await Activity.create({ action: "Branch created", userId: 1 });
-    // >>>>>>> main
+    await Activity.create({ action: "Branch created", name: payload.Uname, role: payload.role });
 
     return res.json({
       success: true,
@@ -90,7 +82,7 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-    await Activity.create({ action: "Branch updated", name: req.body.Uname, role: req.body.role });
+    await Activity.create({ action: "Branch updated", userId: 1 });
 
     return res.send({
       success: true,
@@ -108,7 +100,7 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       const branch = await Branch.destroy({ where: { id: id } });
-      await Activity.create({ action: "Branch deleted", name: req.body.Uname, role: req.body.role });
+      await Activity.create({ action: "Branch deleted", userId: 1 });
 
       if (branch)
         return res.send({

@@ -8,7 +8,7 @@ const upload = multer();
 router.route("/create").post(upload.any(), controller.createQualificationType);
 router.route("/listQualificationTypes").get(controller.listQualificationTypes);
 router.route("/edit").put(controller.edit);
-router.route("/delete").post(controller.delete);
+router.route("/delete/:id").delete(controller.delete);
 router.route("/get/:id").get(controller.get);
 // router.findAll();
 

@@ -9,7 +9,6 @@ exports.createLeadsManagmentModuleStatus = async (req, res, next) => {
       req.body
     );
     //
-    let payload = req.body;
 
     let leadsManagmentModuleStatus = {
       name: req.body.name,
@@ -22,12 +21,7 @@ exports.createLeadsManagmentModuleStatus = async (req, res, next) => {
     );
     await Activity.create({
       action: "New leadsManagmentModuleStatus Created",
-
-      name: payload.Uname,
-      role: payload.role,
-      // =======
-      //       userId: 1,
-      // >>>>>>> main
+      name: payload.Uname, role: payload.role
     });
 
     return res.json({
@@ -113,11 +107,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New leadsManagmentModuleStatus updated",
-      name: payload.Uname,
-      role: payload.role,
-      // =======
-      //       userId: 1,
-      // >>>>>>> main
+      name: payload.Uname, role: payload.role
     });
 
     return res.send({
@@ -134,7 +124,6 @@ exports.edit = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
-    let payload = req.body;
     if (id) {
       const leadsManagmentModuleStatus =
         await LeadsManagmentModuleStatus.destroy({
@@ -142,12 +131,7 @@ exports.delete = async (req, res, next) => {
         });
       await Activity.create({
         action: " leadsManagmentModuleStatus deleted",
-
-        name: payload.Uname,
-        role: payload.role,
-        // =======
-        //         userId: 1,
-        // >>>>>>> main
+        name: payload.Uname, role: payload.role
       });
 
       if (leadsManagmentModuleStatus)

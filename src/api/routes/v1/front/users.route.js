@@ -1,7 +1,7 @@
-const express = require("express");
+const express = require('express');
 //  const controller = require('../../../controllers/front/university.controller')
 // const controller = require('../../../controllers/front/users.controller');
-const controller = require("../../../controllers/front/users.controller");
+const controller = require('../../../controllers/front/users.controller');
 
 const router = express.Router();
 
@@ -16,8 +16,10 @@ router.route("/login").post(controller.login);
 router.route("/signup").post(controller.signup);
 router.route("/signout").post(controller.signout);
 
-router.route("/login").post(controller.login);
-router.route("/signup").post(controller.signup);
-router.route("/signout").post(controller.signout);
-
 module.exports = router;
+
+
+
+
+
+

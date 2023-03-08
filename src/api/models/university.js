@@ -29,9 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       visaAppFee: DataTypes.INTEGER,
       addmissionFee: DataTypes.INTEGER,
       qetcFee: DataTypes.INTEGER,
-      // commisionDuration: DataTypes.INTEGER,
-
-      commisionDuration: DataTypes.STRING,
+      commisionDuration: DataTypes.INTEGER,
     },
     {
       sequelize,

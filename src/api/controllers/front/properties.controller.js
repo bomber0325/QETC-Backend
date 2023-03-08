@@ -9,15 +9,7 @@ exports.create = async (req, res, next) => {
     console.log("payload", payload);
     //save the property in db
     let property = await Property.create(payload);
-
-    await Activity.create({
-      action: "New property Created",
-      name: payload.Uname,
-      role: payload.role,
-    });
-    // =======
-    //     await Activity.create({ action: "New property Created", userId: 1 });
-    // >>>>>>> main
+    await Activity.create({ action: "New property Created", name: payload.Uname, role: payload.role });
 
     return res.json({
       success: true,
@@ -94,15 +86,7 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-
-    await Activity.create({
-      action: "property updated",
-      name: payload.Uname,
-      role: payload.role,
-    });
-    // =======
-    //     await Activity.create({ action: "property updated", userId: 1 });
-    // >>>>>>> main
+    await Activity.create({ action: "property updated", name: payload.Uname, role: payload.role });
 
     return res.send({
       success: true,
@@ -117,20 +101,11 @@ exports.edit = async (req, res, next) => {
 // API to delete property
 exports.delete = async (req, res, next) => {
   try {
-    let payload = req.body;
-
     const { id } = req.params;
     if (id) {
       const property = await Property.destroy({ where: { id: id } });
 
-      await Activity.create({
-        action: "property deleted",
-        name: payload.Uname,
-        role: payload.role,
-      });
-      // =======
-      //       await Activity.create({ action: "property deleted", userId: 1 });
-      // >>>>>>> main
+      await Activity.create({ action: "property deleted", name: payload.Uname, role: payload.role });
       if (property)
         return res.send({
           success: true,

@@ -22,7 +22,5 @@ router.route("/listUniversity").get(controller.listUniversity);
 router.route("/edit").put(uploadSingle, controller.edit);
 router.route("/delete/:id").delete(controller.delete);
 router.route("/get/:id").get(controller.get);
-router.route("/search").post(controller.search);
-
 
 module.exports = router;

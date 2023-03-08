@@ -9,9 +9,6 @@ const Op = db.Sequelize.Op;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-// const Activity = db.Activity;
-const { Branch } = db;
-
 // create Branch
 exports.create = async (req, res, next) => {
   try {
@@ -22,17 +19,7 @@ exports.create = async (req, res, next) => {
     //save the branch in db
     let user = await Users.create(payload);
 
-    await Activity.create({
-      action: "User created",
-      name: payload.Uname,
-      role: payload.Urole,
-    });
-    // =======
-    //save the branch in db
-    // let user = await Users.create(payload);
-
-    // await Activity.create({ action: "User created", userId: 1 });
-    // >>>>>>> main
+    await Activity.create({ action: "User created", name: payload.Uname, role: payload.role });
 
     return res.json({
       success: true,
@@ -68,8 +55,6 @@ exports.list = async (req, res, next) => {
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
-
-      include: [Branch],
     });
     console.log("faqs", faqs);
     // res.send(user);
@@ -106,15 +91,7 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-
-    await Activity.create({
-      action: "User updated",
-      name: payload.Uname,
-      role: payload.Urole,
-    });
-    // =======
-    //     await Activity.create({ action: "User updated", userId: 1 });
-    // >>>>>>> main
+    await Activity.create({ action: "User updated", name: payload.Uname, role: payload.role });
 
     return res.send({
       success: true,
@@ -129,19 +106,10 @@ exports.edit = async (req, res, next) => {
 // API to delete branch
 exports.delete = async (req, res, next) => {
   try {
-    let payload = req.body;
-
     const { id } = req.params;
     if (id) {
       const user = await Users.destroy({ where: { id: id } });
-      await Activity.create({
-        action: "User deleted",
-        name: payload.Uname,
-        role: payload.Urole,
-      });
-      // =======
-      //       await Activity.create({ action: "User deleted", userId: 1 });
-      // >>>>>>> main
+      await Activity.create({ action: "User deleted", name: payload.Uname, role: payload.role });
 
       if (user)
         return res.send({
@@ -216,22 +184,20 @@ exports.login = async (req, res) => {
         });
       }
 
-      await Activity.create({
-        action: "User logged in",
-        name: user.name,
-        role: user.role,
-      });
+      await Activity.create({ action: "User logged in", name: user.name, role: user.role });
+
 
       const token = jwt.sign({ id: user.email }, "JWT_SECRET", {
         expiresIn: 86400, // 24 hours
       });
+
 
       return res.status(200).send({
         id: user.id,
         username: user.name,
         email: user.email,
         roles: user.role,
-        token: "Benear " + token,
+        token: "Benear " + token
       });
     } else {
       const lead = await Lead.findOne({
@@ -239,6 +205,7 @@ exports.login = async (req, res) => {
           email: req.body.mail,
         },
       });
+      
       console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
       console.log("lead id ==>", lead.dataValues.id);
       // const programeTable = await ProgrammeDetails.findByPk(id);
@@ -267,6 +234,7 @@ exports.login = async (req, res) => {
           message: "lead not found for given Id",
         });
     }
+
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
@@ -280,9 +248,10 @@ exports.signup = async (req, res) => {
         name: req.body.username,
         email: req.body.mail,
         password: bcrypt.hashSync(req.body.password, 8),
-        role: "user",
+        role: "user"
       });
-      if (user) res.send({ message: "User registered successfully!" });
+      if (user)
+        res.send({ message: "User registered successfully!" });
     }
   } catch (error) {
     res.status(500).send({ message: error.message });
@@ -292,12 +261,9 @@ exports.signup = async (req, res) => {
 exports.signout = async (req, res) => {
   // Save User to Database
   try {
-    await Activity.create({
-      action: "User logged out",
-      name: req.body.name,
-      role: req.body.role,
-    });
+    await Activity.create({ action: "User logged out", name: req.body.name, role: req.body.role });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 };
+

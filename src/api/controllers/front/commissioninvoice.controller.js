@@ -5,8 +5,6 @@ const { University, InvoiceModuleStatus, Branch } = db;
 // create program categorys
 exports.create = async (req, res, next) => {
   try {
-    let payload = req.body;
-
     console.log("Req.body commissionInvoice controller =====>", req.body);
     //
 
@@ -25,12 +23,7 @@ exports.create = async (req, res, next) => {
     commissionInvoice = await CommissionInvoice.create(commissionInvoice);
     await Activity.create({
       action: "New commissionInvoice Created",
-
-      name: payload.Uname,
-      role: payload.role,
-      // =======
-      //       userId: 1,
-      // >>>>>>> main
+      name: payload.Uname, role: payload.role
     });
 
     return res.json({
@@ -127,7 +120,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New commissionInvoice updated",
-      name: req.body.Uname, role: req.body.role,
+      userId: 1,
     });
 
     return res.send({
@@ -150,7 +143,7 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " commissionInvoice deleted",
-        name: req.body.Uname, role: req.body.role,
+        userId: 1,
       });
 
       if (commissionInvoice)
