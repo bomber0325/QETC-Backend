@@ -9,7 +9,7 @@ const upload = multer();
 router.route("/create").post(upload.any(), controller.createProgramCategory);
 router.route("/listProgramCategorys").get(controller.listProgramCategorys);
 router.route("/edit").put(controller.edit);
-router.route("/delete/:id").delete(controller.delete);
+router.route("/delete").post(controller.delete);
 router.route("/get/:id").get(controller.get);
 // router.findAll();
 

@@ -250,3 +250,62 @@ exports.get = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.search = async (req, res, next) => {
+  // console.log("req.query",req.query);
+  try {
+    const uni = await University.findAndCountAll();
+    let { page, limit } = req.query;
+    let { name } = req.body;
+
+    console.log(req.body);
+
+    const filter = {};
+
+    page = page !== undefined && page !== "" ? parseInt(page) : 1;
+    limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
+
+    if (name) {
+      filter.name = {
+        [Op.like]: "%" + name + "%",
+      };
+    }
+
+    const total = uni.count;
+
+    if (page > Math.ceil(total / limit) && total > 0)
+      page = Math.ceil(total / limit);
+
+    const faqs = await University.findAll({
+      // where: {
+      //   name: req.body.name
+      // },
+      order: [["updatedAt", "DESC"]],
+      offset: limit * (page - 1),
+      limit: limit,
+      where: filter,
+      include: [
+        {
+          model: Campus,
+          as: "Campuses",
+        },
+      ],
+    });
+
+    return res.send({
+      success: true,
+      message: "Universities fetched successfully",
+      data: {
+        faqs,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
+        },
+      },
+    });
+  } catch (err) {
+    res.send("University Error " + err);
+  }
+};

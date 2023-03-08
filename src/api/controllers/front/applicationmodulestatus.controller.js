@@ -110,7 +110,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New applicationModuleStatus updated",
-      userId: 1,
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.send({
@@ -133,7 +133,7 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " applicationModuleStatus deleted",
-        userId: 1,
+        name: req.body.Uname, role: req.body.role,
       });
 
       if (applicationModuleStatus)

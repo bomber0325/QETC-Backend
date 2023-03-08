@@ -18,7 +18,7 @@ exports.create = async (req, res, next) => {
     depitAndCredit = await DepitAndCredit.create(depitAndCredit);
     await Activity.create({
       action: "New DepitAndCredit Created",
-      userId: 1,
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.json({
@@ -104,7 +104,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New depitAndCredit updated",
-      userId: 1,
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.send({
@@ -127,7 +127,7 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " depitAndCredit deleted",
-        userId: 1,
+        name: req.body.Uname, role: req.body.role,
       });
 
       if (depitAndCredit)

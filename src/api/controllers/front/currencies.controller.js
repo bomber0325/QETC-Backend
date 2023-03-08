@@ -24,6 +24,23 @@ exports.create = async (req, res, next) => {
       exRate: +exRate,
       status: +status,
     });
+    let data = await Currency.findOne({
+      where: {
+        iso,
+        name,
+      }
+    });
+
+    console.log("12313", data);
+
+    if(data) {
+      return res.json({
+        success: true,
+        data: data,
+        message: "Now Currency is already existed",
+      });
+    }
+
     //save the currency in db
     let currency = await Currency.create({
       iso,
@@ -42,7 +59,7 @@ exports.create = async (req, res, next) => {
     return res.json({
       success: true,
       data: currency,
-      message: "currency created successfully",
+      message: "currency created success!",
     });
   } catch (err) {
     next();
@@ -118,7 +135,7 @@ exports.edit = async (req, res, next) => {
     );
 
     console.log("edit cur currrr =>", currency);
-    await Activity.create({ action: "New Currency updated", userId: 1 });
+    await Activity.create({ action: "New Currency updated", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,
@@ -136,7 +153,7 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       const currency = await Currency.destroy({ where: { id: id } });
-      await Activity.create({ action: "New Currency deleted", userId: 1 });
+      await Activity.create({ action: "New Currency deleted", name: req.body.Uname, role: req.body.role });
 
       if (currency)
         return res.send({

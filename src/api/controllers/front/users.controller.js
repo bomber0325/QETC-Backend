@@ -1,6 +1,5 @@
 const db = require("../../models");
 const Users = db.Users;
-
 const Lead = db.Lead;
 const ProgrammeDetails = db.ProgrameDetails;
 const Activity = db.Activity;
@@ -17,7 +16,6 @@ const { Branch } = db;
 exports.create = async (req, res, next) => {
   try {
     let payload = req.body;
-
     console.log(bcrypt.hashSync(req.body.password, 10));
 
     payload.password = bcrypt.hashSync(req.body.password, 10);
@@ -241,7 +239,6 @@ exports.login = async (req, res) => {
           email: req.body.mail,
         },
       });
-
       console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
       console.log("lead id ==>", lead.dataValues.id);
       // const programeTable = await ProgrammeDetails.findByPk(id);

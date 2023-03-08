@@ -132,7 +132,7 @@ exports.create = async (req, res, next) => {
     });
 
     // console.log("options",result)
-    // await Activity.create({ action: "Backup created", userId: 1 });
+    // await Activity.create({ action: "Backup created", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,

@@ -32,9 +32,10 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       [`number`]: DataTypes.STRING,
       role: DataTypes.STRING,
-      branchID: DataTypes.INTEGER,
+      branch: DataTypes.STRING,
       position: DataTypes.STRING,
       date: DataTypes.INTEGER,
+      password: DataTypes.STRING
     },
     {
       sequelize,
