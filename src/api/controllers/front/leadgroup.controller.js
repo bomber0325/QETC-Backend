@@ -16,7 +16,7 @@ exports.createLeadGroup = async (req, res, next) => {
     leadgroup = await LeadGroup.create(leadgroup);
     await Activity.create({
       action: "New leadgroup Created",
-      userId: 1,
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.json({
@@ -96,19 +96,48 @@ exports.edit = async (req, res, next) => {
       {
         // Clause
         where: {
-          id: payload.id,
+          id: payload.ID,
         },
       }
     );
-    await Activity.create({
-      action: "New leadgroup updated",
-      userId: 1,
-    });
+    const uni = await LeadGroup.findAndCountAll();
+    let { page, limit, name } = req.query;
+     //name
+    const filter = {};
 
+    page = page !== undefined && page !== "" ? parseInt(page) : 1;
+    limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
+
+    if (name) {
+      filter.name = { $LIKE: name, $options: "gi" };
+    }
+
+    const total = uni.count;
+
+    if (page > Math.ceil(total / limit) && total > 0)
+      page = Math.ceil(total / limit);
+
+    console.log("filter", filter);
+    const faqs = await LeadGroup.findAll({
+      order: [["updatedAt", "DESC"]],
+      offset: limit * (page - 1),
+      limit: limit,
+      where: filter,
+    });
+    console.log("faqs", faqs);
+    // res.send(uni);
     return res.send({
       success: true,
-      message: "leadgroup updated successfully",
-      leadgroup,
+      message: "program categorys fetched successfully",
+      data: {
+        faqs,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
+        },
+      },
     });
   } catch (error) {
     return next(error);
@@ -118,31 +147,58 @@ exports.edit = async (req, res, next) => {
 // API to delete leadgroup
 exports.delete = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    if (id) {
+    const { ID } = req.body;
+    if (ID) {
       const leadgroup = await LeadGroup.destroy({
-        where: { id: id },
+        where: { id: ID },
       });
       await Activity.create({
         action: " leadgroup deleted",
-        userId: 1,
+        name: req.body.Uname, role: req.body.role,
       });
 
-      if (leadgroup)
-        return res.send({
-          success: true,
-          message: "leadgroup Page deleted successfully",
-          id,
-        });
-      else
-        return res.status(400).send({
-          success: false,
-          message: "leadgroup Page not found for given Id",
-        });
-    } else
-      return res
-        .status(400)
-        .send({ success: false, message: "leadgroup Id is required" });
+      const uni = await LeadGroup.findAndCountAll();
+      let { page, limit, name } = req.query;
+  
+      console.log("unitt", uni.count);
+      console.log("req.queryy", req.query); //name
+      const filter = {};
+  
+      page = page !== undefined && page !== "" ? parseInt(page) : 1;
+      limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
+  
+      if (name) {
+        filter.name = { $LIKE: name, $options: "gi" };
+      }
+  
+      const total = uni.count;
+  
+      if (page > Math.ceil(total / limit) && total > 0)
+        page = Math.ceil(total / limit);
+  
+      console.log("filter", filter);
+      const faqs = await LeadGroup.findAll({
+        order: [["updatedAt", "DESC"]],
+        offset: limit * (page - 1),
+        limit: limit,
+        where: filter,
+      });
+      console.log("faqs", faqs);
+      // res.send(uni);
+      return res.send({
+        success: true,
+        message: "program categorys fetched successfully",
+        data: {
+          faqs,
+          pagination: {
+            page,
+            limit,
+            total,
+            pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
+          },
+        },
+      });
+    }
   } catch (error) {
     return next(error);
   }

@@ -43,7 +43,7 @@ exports.createLead = async (req, res, next) => {
     };
     programmeDetails = await ProgrammeDetails.create(programmeDetails);
 
-    await Activity.create({ action: "new lead created", userId: 1 });
+    await Activity.create({ action: "new lead created", name: req.body.Uname, role: req.body.role });
 
     return res.json({
       success: true,
@@ -213,7 +213,7 @@ exports.edit = async (req, res, next) => {
       },
     });
 
-    await Activity.create({ action: "new lead updated", userId: 1 });
+    await Activity.create({ action: "new lead updated", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,
@@ -236,7 +236,7 @@ exports.delete = async (req, res, next) => {
       });
       const lead = await Lead.destroy({ where: { id: id } });
 
-      await Activity.create({ action: "new lead deleted", userId: 1 });
+      await Activity.create({ action: "new lead deleted", name: req.body.Uname, role: req.body.role });
 
       if (lead)
         return res.send({

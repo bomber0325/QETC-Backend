@@ -61,7 +61,7 @@ exports.createApplicant = async (req, res, next) => {
     };
     applicantDetails = await ApplicationDetails.create(applicantDetails);
 
-    await Activity.create({ action: "new applicant created", userId: 1 });
+    await Activity.create({ action: "new applicant created", name: req.body.Uname, role: req.body.role });
 
     return res.json({
       success: true,
@@ -305,7 +305,7 @@ exports.edit = async (req, res, next) => {
       },
     });
 
-    await Activity.create({ action: "applicant updated", userId: 1 });
+    await Activity.create({ action: "applicant updated", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,
@@ -327,7 +327,7 @@ exports.delete = async (req, res, next) => {
       });
       const applicant = await Applicants.destroy({ where: { id: id } });
 
-      await Activity.create({ action: "applicant deleted", userId: 1 });
+      await Activity.create({ action: "applicant deleted", name: req.body.Uname, role: req.body.role });
 
       if (applicant)
         return res.send({

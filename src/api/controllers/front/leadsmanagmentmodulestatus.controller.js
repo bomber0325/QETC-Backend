@@ -21,7 +21,7 @@ exports.createLeadsManagmentModuleStatus = async (req, res, next) => {
     );
     await Activity.create({
       action: "New leadsManagmentModuleStatus Created",
-      userId: 1,
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.json({
@@ -107,7 +107,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New leadsManagmentModuleStatus updated",
-      userId: 1,
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.send({
@@ -131,7 +131,7 @@ exports.delete = async (req, res, next) => {
         });
       await Activity.create({
         action: " leadsManagmentModuleStatus deleted",
-        userId: 1,
+        name: req.body.Uname, role: req.body.role,
       });
 
       if (leadsManagmentModuleStatus)

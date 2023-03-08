@@ -60,6 +60,7 @@
     "slugify": "^1.6.5"
   },
   "devDependencies": {
+    "nodemon": "^2.0.21",
     "sequelize-cli": "^6.6.0"
   }
 }

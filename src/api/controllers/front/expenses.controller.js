@@ -18,7 +18,7 @@ exports.create = async (req, res, next) => {
     expenses = await Expenses.create(expenses);
     await Activity.create({
       action: "New Expenses Created",
-      userId: 1,
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.json({
@@ -104,7 +104,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New expenses updated",
-      userId: 1,
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.send({
@@ -127,7 +127,7 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " expenses deleted",
-        userId: 1,
+        name: req.body.Uname, role: req.body.role,
       });
 
       if (expenses)
