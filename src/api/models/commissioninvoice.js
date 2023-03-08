@@ -60,15 +60,18 @@ module.exports = (sequelize, DataTypes) => {
       },
       statusID: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: Math.floor(Math.random() * 4 + 1),
       },
       universityID: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: Math.floor(Math.random() * 4 + 1),
       },
       branchID: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: Math.floor(Math.random() * 4 + 1),
       },
     },
     {

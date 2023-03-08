@@ -14,6 +14,7 @@ exports.create = async (req, res, next) => {
     //create new record in db
     let university = {
       image: req?.file?.filename,
+      logo: req?.file?.filename,
       name: req.body.name,
       type: req.body.type,
       counserllerName: req.body.counserllerName,
@@ -42,7 +43,7 @@ exports.create = async (req, res, next) => {
       campus = await Campus.create(campus);
     });
 
-    await Activity.create({ action: "New University Created", name: payload.Uname, role: payload.role });
+    await Activity.create({ action: "New University Created", name: req.body.Uname, role: req.body.role });
     return res.send({
       success: true,
       data: university,
@@ -152,7 +153,7 @@ exports.edit = async (req, res, next) => {
       );
     });
 
-    await Activity.create({ action: "University updated", name: payload.Uname, role: payload.role });
+    await Activity.create({ action: "University updated", name: req.body.Uname, role: req.body.role });
     return res.send({
       success: true,
       message: "University updated successfully",
@@ -173,7 +174,7 @@ exports.delete = async (req, res, next) => {
         where: { UniversityId: id },
       });
 
-      await Activity.create({ action: "University deleted", name: payload.Uname, role: payload.role });
+      await Activity.create({ action: "University deleted", name: req.body.Uname, role: req.body.role });
       if (university)
         return res.send({
           success: true,
@@ -223,5 +224,64 @@ exports.get = async (req, res, next) => {
         .send({ success: false, message: "University Id is required" });
   } catch (error) {
     return next(error);
+  }
+};
+
+exports.search = async (req, res, next) => {
+  // console.log("req.query",req.query);
+  try {
+    const uni = await University.findAndCountAll();
+    let { page, limit } = req.query;
+    let { name } = req.body;
+
+    console.log(req.body);
+
+    const filter = {};
+
+    page = page !== undefined && page !== "" ? parseInt(page) : 1;
+    limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
+
+    if (name) {
+      filter.name = {
+        [Op.like]: "%" + name + "%",
+      };
+    }
+
+    const total = uni.count;
+
+    if (page > Math.ceil(total / limit) && total > 0)
+      page = Math.ceil(total / limit);
+
+    const faqs = await University.findAll({
+      // where: {
+      //   name: req.body.name
+      // },
+      order: [["updatedAt", "DESC"]],
+      offset: limit * (page - 1),
+      limit: limit,
+      where: filter,
+      include: [
+        {
+          model: Campus,
+          as: "Campuses",
+        },
+      ],
+    });
+
+    return res.send({
+      success: true,
+      message: "Universities fetched successfully",
+      data: {
+        faqs,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
+        },
+      },
+    });
+  } catch (err) {
+    res.send("University Error " + err);
   }
 };

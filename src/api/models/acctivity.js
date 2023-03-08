@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Activity.hasOne(models.Users, { foreignKey: "userId" });
+      // Activity.hasOne(models.Users, { foreignKey: "userId" });
+      Activity.belongsTo(models.Users, { foreignKey: "userID" });
     }
   }
   Activity.init(

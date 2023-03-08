@@ -13,7 +13,9 @@ models.sequelize.sync().then(function () {
   http.createServer(app).listen(port);
 });
 
-console.log(`servers is running on ${port}`)
+console.log(`servers is running on ${port}` )
+
+
 
 // http.createServer(app).listen(port);
 // console.log(`App is running on ${port}`);

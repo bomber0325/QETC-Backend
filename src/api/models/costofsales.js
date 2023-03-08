@@ -3,7 +3,7 @@
 const { Model } = require("sequelize");
 // const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class ProgramLevel extends Model {
+  class CostOfSales extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  ProgramLevel.init(
+  CostOfSales.init(
     {
       ID: {
         type: DataTypes.INTEGER,
@@ -32,13 +32,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      amount: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
       sequelize,
-      modelName: "ProgramLevel",
-      tableName: "programlevel",
+      modelName: "CostOfSales",
+      tableName: "CostOfSales".toLowerCase(),
     }
   );
-  // const level = await ProgramLevel.findAll();
-  return ProgramLevel;
+  // const level = await CostOfSales.findAll();
+  return CostOfSales;
 };

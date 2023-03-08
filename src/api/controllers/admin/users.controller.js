@@ -146,7 +146,6 @@ exports.create = async (req, res, next) => {
             if (user) {
                 return res.status(200).send({ success: false, message: 'User already exists' });
             }
-            console.log(password);
             user = await User.create(body);
 
             const rndmoken = randomstring.generate({ length: 16, charset: 'alphanumeric' })

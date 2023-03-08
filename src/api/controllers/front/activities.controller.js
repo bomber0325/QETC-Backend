@@ -1,5 +1,6 @@
 const db = require("../../models");
 const Activity = db.Activity;
+const { Users } = db;
 // Activity
 // list Activityies
 exports.list = async (req, res, next) => {
@@ -30,6 +31,7 @@ exports.list = async (req, res, next) => {
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
+      include: [Users],
     });
     console.log("faqs", faqs);
     // res.send(uni);

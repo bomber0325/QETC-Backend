@@ -34,13 +34,32 @@ const getTimeFromFileName = async (fileName) => {
 const getBackupFiles = async () => {
   const backupDirectory = "./backups/";
   const files = await fs.promises.readdir(backupDirectory);
-  const backups = files.map(async (file) => {
-    if (path.extname(file) === ".sql") {
-      let time = await getTimeFromFileName(file);
-      console.log("time", file, time);
-      return { time, file };
-    }
-  });
+  const backups = await Promise.all(
+    files.map(async (file) => {
+      const filePath = path.join(backupDirectory, file);
+      const stats = await fs.promises.stat(filePath);
+      if (path.extname(file) === ".sql") {
+        let time = await getTimeFromFileName(file);
+        console.log("time", file, time);
+        return {
+          time,
+          size:
+            stats.size / 1024 > 1200
+              ? (stats.size / (1024 * 1024)).toFixed(2) + " MB"
+              : (stats.size / 1024).toFixed(2) + " KB",
+          file,
+        };
+      }
+    })
+  );
+  // const backups = files.map(async (file) => {
+  //   console.log("these are backup filessssss", file.size);
+  //   if (path.extname(file) === ".sql") {
+  //     let time = await getTimeFromFileName(file);
+  //     console.log("time", file, time);
+  //     return { time, file };
+  //   }
+  // });
   console.log("backups", backups);
   return await Promise.all(backups);
 };
@@ -68,7 +87,8 @@ exports.create = async (req, res, next) => {
       user: config.username,
       password: config.password,
       database: config.database,
-      database: "Qetc",
+      password: config.password,
+      // databsase: "Qetc",
       // dest: __dirname + "../../../../../config"
     };
 
@@ -82,19 +102,16 @@ exports.create = async (req, res, next) => {
       "-" +
       d.getFullYear();
     console.log("options", options);
+    if (!fs.existsSync("./backups/")) fs.mkdirSync("./backups/");
     let fileName = await getFileName();
+    console.log("config from backup.controller", config);
     mysqldump({
-      connection: {
-        host: "localhost",
-        user: "root",
-        password: "password",
-        database: "Qetc",
-      },
+      connection: options,
       dumpToFile: `./backups/${fileName}.sql`,
     });
 
     // console.log("options",result)
-    // await Activity.create({ action: "Backup created", userId: 1 });
+    // await Activity.create({ action: "Backup created", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,

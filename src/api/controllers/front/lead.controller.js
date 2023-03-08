@@ -8,10 +8,10 @@ const { Branch, Programme, University } = db;
 // create lead
 exports.createLead = async (req, res, next) => {
   try {
-    console.log("Req.body Lead =====>", req.body);
-    console.log("Req.body Lead =====>", req.file);
+    // console.log("Req.body Lead =====>", req.body);
 
     //
+    console.log("Req.file Lead =====>", req.file);
 
     let lead = {
       image: req?.file?.filename,
@@ -23,9 +23,8 @@ exports.createLead = async (req, res, next) => {
       email: req.body.email,
       refferalName: req.body.refferalName,
       refferalEmail: req.body.refferalEmail,
+      // statusID: 1,
     };
-
-
 
     //save the lead in db
     lead = await Lead.create(lead);
@@ -44,7 +43,7 @@ exports.createLead = async (req, res, next) => {
     };
     programmeDetails = await ProgrammeDetails.create(programmeDetails);
 
-    await Activity.create({ action: "new lead created", name: lead.Uname, role: lead.role });
+    await Activity.create({ action: "new lead created", name: req.body.Uname, role: req.body.role });
 
     return res.json({
       success: true,
@@ -53,7 +52,7 @@ exports.createLead = async (req, res, next) => {
       message: "Lead created successfully",
     });
   } catch (err) {
-    console.log("Error handling =>", err);
+    console.log("Error from Lead Create handling =>", err);
     next();
   }
 };
@@ -82,7 +81,6 @@ exports.listLead = async (req, res, next) => {
       page = Math.ceil(total / limit);
 
     //  console.log("filter",filter)
-    console.log("filter", filter, page, limit);
     const faqs = await Lead.findAll({
       order: [["updatedAt", "DESC"]],
       offset: limit * (page - 1),
@@ -106,7 +104,6 @@ exports.listLead = async (req, res, next) => {
         University,
       ],
     });
-
     // console.log("faqs", faqs);
     // res.send(uni);
     return res.send({
@@ -186,7 +183,7 @@ exports.edit = async (req, res, next) => {
     let payload = req.body;
     if (req.file) {
       const image = req?.file?.filename;
-      payload[`logo`] = image;
+      payload[`image`] = image;
     }
     const lead = await Lead.update(
       // Values to update
@@ -216,7 +213,7 @@ exports.edit = async (req, res, next) => {
       },
     });
 
-    await Activity.create({ action: "new lead updated", name: payload.Uname, role: payload.role });
+    await Activity.create({ action: "new lead updated", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,
@@ -239,7 +236,7 @@ exports.delete = async (req, res, next) => {
       });
       const lead = await Lead.destroy({ where: { id: id } });
 
-      await Activity.create({ action: "new lead deleted", name: payload.Uname, role: payload.role });
+      await Activity.create({ action: "new lead deleted", name: req.body.Uname, role: req.body.role });
 
       if (lead)
         return res.send({
@@ -266,11 +263,7 @@ exports.get = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
-      const lead = await Lead.findOne({
-        where: {
-          email: req.body.mail,
-        },
-      });
+      const lead = await Lead.findByPk(id);
       console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
       console.log("lead id ==>", lead.dataValues.id);
       // const programeTable = await ProgrammeDetails.findByPk(id);

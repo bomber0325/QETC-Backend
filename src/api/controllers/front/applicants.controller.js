@@ -9,8 +9,9 @@ exports.createApplicant = async (req, res, next) => {
   console.log("applicantsid", Applicants);
 
   try {
-    console.log("Req.body applicants =====>", req.body);
+    // console.log("Req.body applicants =====>", req.body);
     console.log("req.files", req.files ? req.files : "!No Files!");
+    console.log("req.file", req.file ? req.file : "!No file!");
 
     let applicants = {
       fullName: req.body.fullName,
@@ -33,7 +34,7 @@ exports.createApplicant = async (req, res, next) => {
     //save the lead in db
     applicants = await Applicants.create(applicants);
     // let applicantsId= applicants.dataValues.id;
-    console.log("applicantsid", applicants.dataValues.id);
+    // console.log("applicantsid", applicants.dataValues.id);
     //
 
     let applicantDetails = {
@@ -60,7 +61,7 @@ exports.createApplicant = async (req, res, next) => {
     };
     applicantDetails = await ApplicationDetails.create(applicantDetails);
 
-    await Activity.create({ action: "new applicant created", name: payload.Uname, role: payload.role  });
+    await Activity.create({ action: "new applicant created", name: req.body.Uname, role: req.body.role });
 
     return res.json({
       success: true,
@@ -130,11 +131,14 @@ exports.createApplicant = async (req, res, next) => {
 // };
 
 exports.listApplicants = async (req, res, next) => {
+  // console.log("req.query",req.query);
+  console.log("hhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiii saqib");
   try {
     const uni = await Applicants.findAndCountAll();
     let { page, limit, name } = req.query;
+
     console.log("unitt", uni.count);
-    console.log("req.queryy", req.query); 
+    console.log("req.queryy", req.query); //name
     const filter = {};
 
     page = page !== undefined && page !== "" ? parseInt(page) : 1;
@@ -241,13 +245,19 @@ exports.edit = async (req, res, next) => {
 
     //   // fileUpload
     // }
-    if (req.file) {
-      const image = req?.file?.filename;
+    if (req.files) {
+      const image =
+        req?.files?.image && req?.files?.image[0]
+          ? req?.files?.image[0].filename
+          : "";
       payload[`image`] = image;
     }
 
     if (req.file) {
-      const fileUpload = req?.file?.filename;
+      const fileUpload =
+        req?.files?.fileUpload && req?.files?.fileUpload[0]
+          ? req?.files?.fileUpload[0].filename
+          : "";
       payload[`fileUpload`] = fileUpload;
     }
     // fileUpload
@@ -295,7 +305,7 @@ exports.edit = async (req, res, next) => {
       },
     });
 
-    await Activity.create({ action: "applicant updated", userId: 1 });
+    await Activity.create({ action: "applicant updated", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,
@@ -317,7 +327,7 @@ exports.delete = async (req, res, next) => {
       });
       const applicant = await Applicants.destroy({ where: { id: id } });
 
-      await Activity.create({ action: "applicant deleted", userId: 1 });
+      await Activity.create({ action: "applicant deleted", name: req.body.Uname, role: req.body.role });
 
       if (applicant)
         return res.send({

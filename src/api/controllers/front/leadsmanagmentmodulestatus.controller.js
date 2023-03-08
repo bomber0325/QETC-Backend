@@ -21,7 +21,7 @@ exports.createLeadsManagmentModuleStatus = async (req, res, next) => {
     );
     await Activity.create({
       action: "New leadsManagmentModuleStatus Created",
-      name: payload.Uname, role: payload.role
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.json({
@@ -107,7 +107,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New leadsManagmentModuleStatus updated",
-      name: payload.Uname, role: payload.role
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.send({
@@ -131,7 +131,7 @@ exports.delete = async (req, res, next) => {
         });
       await Activity.create({
         action: " leadsManagmentModuleStatus deleted",
-        name: payload.Uname, role: payload.role
+        name: req.body.Uname, role: req.body.role,
       });
 
       if (leadsManagmentModuleStatus)

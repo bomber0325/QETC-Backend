@@ -1,62 +1,47 @@
 const db = require("../../models");
-const Currency = db.Currency;
+const DepitAndCredit = db.DepitAndCredit;
 const Activity = db.Activity;
-
-// create Currency
+// create program categorys
 exports.create = async (req, res, next) => {
   try {
-    let { iso, name, exRate, status } = req.body;
+    console.log("Req.body depitAndCredit controller =====>", req.body);
+    //
 
-    console.log("payload of create currency", {
-      iso,
-      name,
-      exRate: +exRate,
-      status: +status,
+    let depitAndCredit = {
+      name: req.body.name,
+      description: req.body.description,
+      amount: req.body.amount,
+      date: req.body.date,
+    };
+
+    //save the depitAndCredit in db
+    depitAndCredit = await DepitAndCredit.create(depitAndCredit);
+    await Activity.create({
+      action: "New DepitAndCredit Created",
+      name: req.body.Uname, role: req.body.role,
     });
-    let data = await Currency.findOne({
-      where: {
-        iso,
-        name,
-      }
-    });
-
-    console.log("12313", data);
-
-    if(data) {
-      return res.json({
-        success: true,
-        data: data,
-        message: "Now Currency is already existed",
-      });
-    }
-
-    //save the currency in db
-    let currency = await Currency.create({
-      iso,
-      name,
-      exRate: +exRate,
-      status: +status,
-    });
-
-    console.log(req.body.role);
-
-    await Activity.create({ action: "New Currency created", name: req.body.Uname, role: req.body.role });
 
     return res.json({
       success: true,
-      data: currency,
-      message: "currency created success!",
+      data: depitAndCredit,
+      // Activity,
+      message: "depitAndCredit created successfully",
     });
   } catch (err) {
+    // res.status(500).send({
+    //     message:
+    //       err.message || "Some error occurred while creating the Tutorial."
+    //   });
+    console.log("Error handling =>", err);
+    // console.log("catch block")
     next();
   }
 };
 
-// list Currencyies
+// list depitAndCredit
 exports.list = async (req, res, next) => {
   try {
-    const uni = await Currency.findAndCountAll();
-
+    const uni = await DepitAndCredit.findAndCountAll();
     let { page, limit, name } = req.query;
 
     console.log("unitt", uni.count);
@@ -76,7 +61,7 @@ exports.list = async (req, res, next) => {
       page = Math.ceil(total / limit);
 
     console.log("filter", filter);
-    const faqs = await Currency.findAll({
+    const faqs = await DepitAndCredit.findAll({
       order: [["updatedAt", "DESC"]],
       offset: limit * (page - 1),
       limit: limit,
@@ -86,7 +71,7 @@ exports.list = async (req, res, next) => {
     // res.send(uni);
     return res.send({
       success: true,
-      message: "currency fetched successfully",
+      message: "depitAndCredit fetched successfully",
       data: {
         faqs,
         pagination: {
@@ -98,18 +83,16 @@ exports.list = async (req, res, next) => {
       },
     });
   } catch (err) {
-    res.send("currency Error " + err);
+    res.send("depitAndCredit Error " + err);
   }
   // next();
 };
 
-// API to edit currency
+// API to edit depitAndCredit
 exports.edit = async (req, res, next) => {
   try {
     let payload = req.body;
-    console.log("edit payload =>", payload);
-
-    const currency = await Currency.update(
+    const depitAndCredit = await DepitAndCredit.update(
       // Values to update
       payload,
       {
@@ -119,70 +102,77 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-
-    console.log("edit cur currrr =>", currency);
-    await Activity.create({ action: "New Currency updated", name: req.body.Uname, role: req.body.role });
+    await Activity.create({
+      action: "New depitAndCredit updated",
+      name: req.body.Uname, role: req.body.role,
+    });
 
     return res.send({
       success: true,
-      message: "currency updated successfully",
-      currency,
+      message: "depitAndCredit updated successfully",
+      depitAndCredit,
     });
   } catch (error) {
     return next(error);
   }
 };
 
-// API to delete currency
+// API to delete depitAndCredit
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
-      const currency = await Currency.destroy({ where: { id: id } });
-      await Activity.create({ action: "New Currency deleted", name: req.body.Uname, role: req.body.role });
+      const depitAndCredit = await DepitAndCredit.destroy({
+        where: { id: id },
+      });
+      await Activity.create({
+        action: " depitAndCredit deleted",
+        name: req.body.Uname, role: req.body.role,
+      });
 
-      if (currency)
+      if (depitAndCredit)
         return res.send({
           success: true,
-          message: "currency deleted successfully",
+          message: "depitAndCredit Page deleted successfully",
           id,
         });
       else
         return res.status(400).send({
           success: false,
-          message: "currency Page not found for given Id",
+          message: "depitAndCredit Page not found for given Id",
         });
     } else
       return res
         .status(400)
-        .send({ success: false, message: "currency Id is required" });
+        .send({ success: false, message: "depitAndCredit Id is required" });
   } catch (error) {
     return next(error);
   }
 };
 
-// API to get  by id a currency
+// API to get  by id a depitAndCredit
 exports.get = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
-      const currency = await Currency.findByPk(id);
+      console.log("oooooooooooooooooooooooo\n", DepitAndCredit);
+      const depitAndCredit = await DepitAndCredit.findByPk(id);
 
-      if (currency)
+      if (depitAndCredit)
         return res.json({
           success: true,
-          message: "currency retrieved successfully",
-          currency,
+          message: "depitAndCredit retrieved successfully",
+          depitAndCredit,
         });
       else
         return res.status(400).send({
           success: false,
-          message: "currency not found for given Id",
+          message: "depitAndCredit not found for given Id",
         });
     } else
       return res
         .status(400)
-        .send({ success: false, message: "currency Id is required" });
+        .send({ success: false, message: "depitAndCredit Id is required" });
   } catch (error) {
     return next(error);
   }

@@ -1,31 +1,47 @@
 const db = require("../../models");
-const Property = db.Property;
+const Sales = db.Sales;
 const Activity = db.Activity;
-
-// create Property
+// create program categorys
 exports.create = async (req, res, next) => {
   try {
-    let payload = req.body;
-    console.log("payload", payload);
-    //save the property in db
-    let property = await Property.create(payload);
-    await Activity.create({ action: "New property Created", name: req.body.Uname, role: req.body.role });
+    console.log("Req.body sales controller =====>", req.body);
+    //
+
+    let sales = {
+      name: req.body.name,
+      description: req.body.description,
+      amount: req.body.amount,
+      date: req.body.date,
+    };
+
+    //save the sales in db
+    sales = await Sales.create(sales);
+    await Activity.create({
+      action: "New Sales Created",
+      name: req.body.Uname, role: req.body.role,
+    });
 
     return res.json({
       success: true,
-      data: property,
-      message: "property created successfully",
+      data: sales,
+      // Activity,
+      message: "sales created successfully",
     });
   } catch (err) {
+    // res.status(500).send({
+    //     message:
+    //       err.message || "Some error occurred while creating the Tutorial."
+    //   });
+    console.log("Error handling =>", err);
+    // console.log("catch block")
     next();
   }
 };
 
-// list Propertyies
+// list sales
 exports.list = async (req, res, next) => {
   try {
-    const uni = await Property.findAndCountAll();
-
+    const uni = await Sales.findAndCountAll();
     let { page, limit, name } = req.query;
 
     console.log("unitt", uni.count);
@@ -45,7 +61,7 @@ exports.list = async (req, res, next) => {
       page = Math.ceil(total / limit);
 
     console.log("filter", filter);
-    const faqs = await Property.findAll({
+    const faqs = await Sales.findAll({
       order: [["updatedAt", "DESC"]],
       offset: limit * (page - 1),
       limit: limit,
@@ -55,7 +71,7 @@ exports.list = async (req, res, next) => {
     // res.send(uni);
     return res.send({
       success: true,
-      message: "Properties fetched successfully",
+      message: "program categorys fetched successfully",
       data: {
         faqs,
         pagination: {
@@ -67,16 +83,16 @@ exports.list = async (req, res, next) => {
       },
     });
   } catch (err) {
-    res.send("property Error " + err);
+    res.send("sales Error " + err);
   }
   // next();
 };
 
-// API to edit property
+// API to edit sales
 exports.edit = async (req, res, next) => {
   try {
     let payload = req.body;
-    const property = await Property.update(
+    const sales = await Sales.update(
       // Values to update
       payload,
       {
@@ -86,68 +102,77 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-    await Activity.create({ action: "property updated", name: req.body.Uname, role: req.body.role });
+    await Activity.create({
+      action: "New sales updated",
+      name: req.body.Uname, role: req.body.role,
+    });
 
     return res.send({
       success: true,
-      message: "property updated successfully",
-      property,
+      message: "sales updated successfully",
+      sales,
     });
   } catch (error) {
     return next(error);
   }
 };
 
-// API to delete property
+// API to delete sales
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
-      const property = await Property.destroy({ where: { id: id } });
+      const sales = await Sales.destroy({
+        where: { id: id },
+      });
+      await Activity.create({
+        action: " sales deleted",
+        name: req.body.Uname, role: req.body.role,
+      });
 
-      await Activity.create({ action: "property deleted", name: req.body.Uname, role: req.body.role });
-      if (property)
+      if (sales)
         return res.send({
           success: true,
-          message: "property Page deleted successfully",
+          message: "sales Page deleted successfully",
           id,
         });
       else
         return res.status(400).send({
           success: false,
-          message: "property Page not found for given Id",
+          message: "sales Page not found for given Id",
         });
     } else
       return res
         .status(400)
-        .send({ success: false, message: "property Id is required" });
+        .send({ success: false, message: "sales Id is required" });
   } catch (error) {
     return next(error);
   }
 };
 
-// API to get  by id a property
+// API to get  by id a sales
 exports.get = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
-      const property = await Property.findByPk(id);
+      console.log("oooooooooooooooooooooooo\n", Sales);
+      const sales = await Sales.findByPk(id);
 
-      if (property)
+      if (sales)
         return res.json({
           success: true,
-          message: "property retrieved successfully",
-          property,
+          message: "sales retrieved successfully",
+          sales,
         });
       else
         return res.status(400).send({
           success: false,
-          message: "property not found for given Id",
+          message: "sales not found for given Id",
         });
     } else
       return res
         .status(400)
-        .send({ success: false, message: "property Id is required" });
+        .send({ success: false, message: "sales Id is required" });
   } catch (error) {
     return next(error);
   }
