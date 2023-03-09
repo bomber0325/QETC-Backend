@@ -23,7 +23,7 @@ exports.create = async (req, res, next) => {
     await Activity.create({
       action: "User created",
       name: payload.Uname,
-      role: payload.role,
+      role: payload.Urole,
     });
 
     return res.json({
@@ -99,7 +99,7 @@ exports.edit = async (req, res, next) => {
     await Activity.create({
       action: "User updated",
       name: payload.Uname,
-      role: payload.role,
+      role: payload.Urole,
     });
 
     return res.send({
@@ -115,13 +115,14 @@ exports.edit = async (req, res, next) => {
 // API to delete branch
 exports.delete = async (req, res, next) => {
   try {
+    let payload = req.body;
     const { id } = req.params;
     if (id) {
       const user = await Users.destroy({ where: { id: id } });
       await Activity.create({
         action: "User deleted",
         name: payload.Uname,
-        role: payload.role,
+        role: payload.Urole,
       });
 
       if (user)
