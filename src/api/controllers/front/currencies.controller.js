@@ -164,9 +164,7 @@ exports.delete = async (req, res, next) => {
 // API to get  by id a currency
 exports.get = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    if (id) {
-      const currency = await Currency.findByPk(id);
+      const currency = await Currency.findAll({order: [["updatedAt", "DESC"]]});
 
       if (currency)
         return res.json({
@@ -179,10 +177,6 @@ exports.get = async (req, res, next) => {
           success: false,
           message: "currency not found for given Id",
         });
-    } else
-      return res
-        .status(400)
-        .send({ success: false, message: "currency Id is required" });
   } catch (error) {
     return next(error);
   }
