@@ -17,6 +17,7 @@ exports.create = async (req, res, next) => {
       phone,
       country,
       manager,
+      role: req.body.Urole,
     });
     await Activity.create({
       action: "Branch created",
