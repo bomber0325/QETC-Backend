@@ -3,7 +3,7 @@
 const { Model } = require("sequelize");
 // const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class CommissionInvoice extends Model {
+  class GeneralInvoice extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,24 +11,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      CommissionInvoice.belongsTo(models.University, {
+      GeneralInvoice.belongsTo(models.University, {
         foreignKey: "universityID",
       });
-      CommissionInvoice.belongsTo(models.InvoiceModuleStatus, {
+      GeneralInvoice.belongsTo(models.InvoiceModuleStatus, {
         foreignKey: "statusID",
       });
-      CommissionInvoice.belongsTo(models.Branch, {
+      GeneralInvoice.belongsTo(models.Branch, {
         foreignKey: "branchID",
       });
-      CommissionInvoice.belongsTo(models.BillingInfo, {
+      GeneralInvoice.belongsTo(models.BillingInfo, {
         foreignKey: "billingID",
       });
-      CommissionInvoice.belongsTo(models.MailingInfo, {
+      GeneralInvoice.belongsTo(models.MailingInfo, {
         foreignKey: "mailingID",
       });
     }
   }
-  CommissionInvoice.init(
+  GeneralInvoice.init(
     {
       ID: {
         type: DataTypes.INTEGER,
@@ -98,15 +98,15 @@ module.exports = (sequelize, DataTypes) => {
       type: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: "commission", // or general
+        defaultValue: "general", // or general
       },
     },
     {
       sequelize,
-      modelName: "CommissionInvoice",
-      tableName: "CommissionInvoice".toLowerCase(),
+      modelName: "GeneralInvoice",
+      tableName: "GeneralInvoice".toLowerCase(),
     }
   );
-  // const level = await CommissionInvoice.findAll();
-  return CommissionInvoice;
+  // const level = await GeneralInvoice.findAll();
+  return GeneralInvoice;
 };

@@ -1,43 +1,33 @@
 const db = require("../../models");
-const { Op } = require("sequelize");
-const CommissionInvoice = db.CommissionInvoice;
+const BillingInfo = db.BillingInfo;
 const Activity = db.Activity;
-const { University, InvoiceModuleStatus, Branch, BillingInfo, MailingInfo } =
-  db;
 // create program categorys
 exports.create = async (req, res, next) => {
   try {
-    console.log("Req.body commissionInvoice controller =====>", req.body);
+    console.log("Req.body billingInfo controller =====>", req.body);
     //
 
-    let commissionInvoice = {
-      itemdate: req.body?.itemdate || Date.now(),
-      recipient: req.body?.recipient,
-      email: req.body?.email,
-      service: req.body?.service,
-      amount: req.body?.amount,
-      price: req.body?.price,
-      statusID: +req.body?.statusID,
-      universityID: +req.body?.universityID,
-      branchID: +req.body?.branchID,
-      billingID: +req.body?.billingID,
-      mailingID: +req.body?.mailingID,
-      type: "commission",
+    let billingInfo = {
+      addressOne: req.body.billing.addressOne,
+      addressTwo: req.body.billing.addressTwo,
+      country: req.body.billing.country,
+      phone: req.body.billing.phone,
+      email: req.body.billing.email,
     };
 
-    //save the commissionInvoice in db
-    commissionInvoice = await CommissionInvoice.create(commissionInvoice);
+    //save the billingInfo in db
+    billingInfo = await BillingInfo.create(billingInfo);
     await Activity.create({
-      action: "New commissionInvoice Created",
+      action: "New billingInfo Created",
       name: req.body.Uname,
       role: req.body.role,
     });
 
     return res.json({
       success: true,
-      data: commissionInvoice,
+      data: billingInfo,
       // Activity,
-      message: "commissionInvoice created successfully",
+      message: "billingInfo created successfully",
     });
   } catch (err) {
     // res.status(500).send({
@@ -53,7 +43,7 @@ exports.create = async (req, res, next) => {
 // list program categorys
 exports.list = async (req, res, next) => {
   try {
-    const uni = await CommissionInvoice.findAndCountAll();
+    const uni = await BillingInfo.findAndCountAll();
     let { page, limit, name } = req.query;
 
     console.log("unitt", uni.count);
@@ -73,29 +63,17 @@ exports.list = async (req, res, next) => {
       page = Math.ceil(total / limit);
 
     console.log("filter", filter);
-    const faqs = await CommissionInvoice.findAll({
+    const faqs = await BillingInfo.findAll({
       order: [["updatedAt", "DESC"]],
       offset: limit * (page - 1),
       limit: limit,
-      where: {
-        ...filter,
-        type: {
-          [Op.not]: "general",
-        },
-      },
-      include: [
-        University,
-        InvoiceModuleStatus,
-        Branch,
-        BillingInfo,
-        MailingInfo,
-      ],
+      where: filter,
     });
     console.log("faqs", faqs);
     // res.send(uni);
     return res.send({
       success: true,
-      message: "commission invoice fetched successfully",
+      message: "program categorys fetched successfully",
       data: {
         faqs,
         pagination: {
@@ -107,26 +85,22 @@ exports.list = async (req, res, next) => {
       },
     });
   } catch (err) {
-    res.send("commissionInvoice Error " + err);
+    res.send("billingInfo Error " + err);
   }
   // next();
 };
 
-// API to edit commissionInvoice
+// API to edit billingInfo
 exports.edit = async (req, res, next) => {
   try {
-    // let payload = req.body;
     let payload = {
-      itemdate: req.body.itemdate,
-      recipient: req.body.recipient,
-      email: req.body.email,
-      service: req.body.service,
-      amount: req.body.amount,
-      statusID: req.body.status,
-      universityID: req.body.university,
-      branchID: req.body.branch,
+      addressOne: req.body.billing.addressOne,
+      addressTwo: req.body.billing.addressTwo,
+      country: req.body.billing.country,
+      phone: req.body.billing.phone,
+      email: req.body.billing.email,
     };
-    const commissionInvoice = await CommissionInvoice.update(
+    const billingInfo = await BillingInfo.update(
       // Values to update
       payload,
       {
@@ -137,79 +111,79 @@ exports.edit = async (req, res, next) => {
       }
     );
     await Activity.create({
-      action: "New commissionInvoice updated",
+      action: "New billingInfo updated",
       name: req.body.Uname,
       role: req.body.role,
     });
 
     return res.send({
       success: true,
-      message: "commissionInvoice updated successfully",
-      commissionInvoice,
+      message: "billingInfo updated successfully",
+      billingInfo,
     });
   } catch (error) {
     return next(error);
   }
 };
 
-// API to delete commissionInvoice
+// API to delete billingInfo
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
-      const commissionInvoice = await CommissionInvoice.destroy({
+      const billingInfo = await BillingInfo.destroy({
         where: { id: id },
       });
       await Activity.create({
-        action: " commissionInvoice deleted",
+        action: " billingInfo deleted",
         name: req.body.Uname,
         role: req.body.role,
       });
 
-      if (commissionInvoice)
+      if (billingInfo)
         return res.send({
           success: true,
-          message: "commissionInvoice Page deleted successfully",
+          message: "billingInfo Page deleted successfully",
           id,
         });
       else
         return res.status(400).send({
           success: false,
-          message: "commissionInvoice Page not found for given Id",
+          message: "billingInfo Page not found for given Id",
         });
     } else
       return res.status(400).send({
         success: false,
-        message: "commissionInvoice Id is required",
+        message: "billingInfo Id is required",
       });
   } catch (error) {
     return next(error);
   }
 };
 
-// API to get  by id a commissionInvoice
+// API to get  by id a billingInfo
 exports.get = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
-      console.log("oooooooooooooooooooooooo\n", CommissionInvoice);
-      const commissionInvoice = await CommissionInvoice.findByPk(id);
+      console.log("oooooooooooooooooooooooo\n", BillingInfo);
+      const billingInfo = await BillingInfo.findByPk(id);
 
-      if (commissionInvoice)
+      if (billingInfo)
         return res.json({
           success: true,
-          message: "commissionInvoice retrieved successfully",
-          commissionInvoice,
+          message: "billingInfo retrieved successfully",
+          billingInfo,
         });
       else
         return res.status(400).send({
           success: false,
-          message: "commissionInvoice not found for given Id",
+          message: "billingInfo not found for given Id",
         });
     } else
       return res.status(400).send({
         success: false,
-        message: "commissionInvoice Id is required",
+        message: "billingInfo Id is required",
       });
   } catch (error) {
     return next(error);
