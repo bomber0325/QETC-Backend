@@ -7,10 +7,17 @@ const Activity = db.Activity;
 // create Branch
 exports.create = async (req, res, next) => {
   try {
-    let payload = req.body;
-    console.log("new branch info", payload);
+    let { name, email, address, phone, country, manager } = req.body;
+    console.log("new branch info", req.body);
     //save the branch in db
-    let branch = await Branch.create(payload);
+    let branch = await Branch.create({
+      name,
+      email,
+      address,
+      phone,
+      country,
+      manager,
+    });
     await Activity.create({
       action: "Branch created",
       name: req.body.Uname,
