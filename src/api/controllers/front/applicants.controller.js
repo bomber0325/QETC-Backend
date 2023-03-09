@@ -4,6 +4,9 @@ const Applicants = db.Applicants;
 const ApplicationDetails = db.ApplicationDetails;
 const Activity = db.Activity;
 
+var Sequelize = require("sequelize");
+const Op = Sequelize.Op;
+
 // create applicants
 exports.createApplicant = async (req, res, next) => {
   console.log("applicantsid", Applicants);
@@ -346,5 +349,70 @@ exports.delete = async (req, res, next) => {
         .send({ success: false, message: "applicant Id is required" });
   } catch (error) {
     return next(error);
+  }
+};
+
+exports.search = async (req, res, next) => {
+  // console.log("req.query",req.query);
+  try {
+    const uni = await Applicants.findAndCountAll();
+    let { page, limit } = req.query;
+    let { name } = req.body;
+    console.log("sdfsddfdsfdsfds", name);
+
+    const filter = {};
+
+    page = page !== undefined && page !== "" ? parseInt(page) : 1;
+    limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
+
+    if (name) {
+      filter.fullName = 
+      {
+        [Op.like]: "%" + name + "%",
+      };
+    }
+
+    const total = uni.count;
+
+    if (page > Math.ceil(total / limit) && total > 0)
+      page = Math.ceil(total / limit);
+
+    console.log("filter", filter, page, limit);
+    const faqs = await Applicants.findAll({
+      order: [["updatedAt", "DESC"]],
+      offset: limit * (page - 1),
+      limit: limit,
+      where: filter,
+      include: [
+        {
+          model: ApplicationDetails,
+          as: "ApplicationDetail",
+          include: [
+            {
+              model: ApplicationModuleStatus,
+              // as: "status",
+              // foreignKey: "sssss",
+            },
+            Branch,
+          ],
+        },
+      ],
+    });
+
+    return res.send({
+      success: true,
+      message: "Applicants fetched successfully",
+      data: {
+        faqs,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
+        },
+      },
+    });
+  } catch (err) {
+    res.send("Applicants Error " + err);
   }
 };

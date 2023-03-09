@@ -7,6 +7,6 @@ router.route("/create").post(cpUpload, controller.create);
 router.route("/list").get(controller.list);
 router.route("/edit").put(cpUpload, controller.edit);
 router.route("/delete/:id").delete(controller.delete);
-router.route("/get/:id").get(controller.get);
+router.route("/get").get(controller.get);
 
 module.exports = router;

@@ -14,6 +14,7 @@ router.route("/delete/:id").delete(controller.delete);
 router.route("/get/:id").get(controller.get);
 router.route("/login").post(controller.login);
 router.route("/signup").post(controller.signup);
+router.route("/search").post(controller.search);
 router.route("/signout").post(controller.signout);
 
 module.exports = router;

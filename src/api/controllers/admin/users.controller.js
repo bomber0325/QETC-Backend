@@ -5,6 +5,8 @@ const { sendEmail } = require('../../utils/emails/emails')
 const randomstring = require("randomstring");
 const moment = require('moment');
 const { uploadedImgPath,pwdSaltRounds } = require('../../../config/vars')
+var Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 // API to get users list
 exports.list = async (req, res, next) => {
@@ -197,3 +199,4 @@ exports.edit = async (req, res, next) => {
             return next(error)
     }
 }
+
