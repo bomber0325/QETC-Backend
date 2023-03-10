@@ -189,7 +189,15 @@ exports.get = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       console.log("oooooooooooooooooooooooo\n", GeneralInvoice);
-      const generalInvoices = await GeneralInvoice.findByPk(id);
+      const generalInvoices = await GeneralInvoice.findByPk(id, {
+        include: [
+          University,
+          InvoiceModuleStatus,
+          Branch,
+          MailingInfo,
+          BillingInfo,
+        ],
+      });
 
       if (generalInvoices)
         return res.json({
