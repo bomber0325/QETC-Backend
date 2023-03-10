@@ -107,7 +107,7 @@ exports.edit = async (req, res, next) => {
       {
         // Clause
         where: {
-          ID: req?.body?.ID,
+          ID: req?.body?.mailing.ID,
         },
       }
     );
