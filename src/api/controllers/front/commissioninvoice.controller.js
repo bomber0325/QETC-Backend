@@ -195,7 +195,15 @@ exports.get = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       console.log("oooooooooooooooooooooooo\n", CommissionInvoice);
-      const commissionInvoice = await CommissionInvoice.findByPk(id);
+      const commissionInvoice = await CommissionInvoice.findByPk(id, {
+        include: [
+          University,
+          InvoiceModuleStatus,
+          Branch,
+          MailingInfo,
+          BillingInfo,
+        ],
+      });
 
       if (commissionInvoice)
         return res.json({
@@ -249,7 +257,13 @@ exports.search = async (req, res, next) => {
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
-      include: [University, InvoiceModuleStatus, Branch],
+      include: [
+        University,
+        InvoiceModuleStatus,
+        Branch,
+        MailingInfo,
+        BillingInfo,
+      ],
     });
     console.log("faqs", faqs);
     // res.send(uni);
