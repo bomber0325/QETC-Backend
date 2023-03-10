@@ -100,13 +100,14 @@ exports.edit = async (req, res, next) => {
       phone: req.body.mailing.phone,
       email: req.body.mailing.email,
     };
+
     const mailingInfo = await MailingInfo.update(
       // Values to update
       payload,
       {
         // Clause
         where: {
-          id: req?.params?.id,
+          ID: req?.body?.ID,
         },
       }
     );

@@ -128,7 +128,7 @@ exports.edit = async (req, res, next) => {
       {
         // Clause
         where: {
-          id: req?.params?.id,
+          ID: req?.body?.ID,
         },
       }
     );
