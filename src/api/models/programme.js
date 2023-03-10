@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       Programme.hasMany(models.Lead, {
         foreignKey: "programID",
       });
+      Programme.belongsTo(models.ProgramLevel, {
+        foreignKey: "programmeLevel",
+      });
     }
   }
   Programme.init(

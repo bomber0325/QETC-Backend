@@ -1,5 +1,6 @@
 const db = require("../../models");
 const Programme = db.Programme;
+const { ProgramLevel } = db;
 const Activity = db.Activity;
 var Sequelize = require("sequelize");
 const Op = Sequelize.Op;
@@ -24,7 +25,11 @@ exports.createProgramme = async (req, res, next) => {
 
     //save the programme in db
     programme = await Programme.create(programme);
-    await Activity.create({ action: "New programme Created", name: req.body.Uname, role: req.body.role });
+    await Activity.create({
+      action: "New programme Created",
+      name: req.body.Uname,
+      role: req.body.role,
+    });
 
     return res.json({
       success: true,
@@ -72,6 +77,7 @@ exports.listProgrammes = async (req, res, next) => {
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
+      include: [ProgramLevel],
     });
     console.log("faqs", faqs);
     // res.send(uni);
@@ -108,7 +114,11 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-    await Activity.create({ action: "New programme updated", name: req.body.Uname, role: req.body.role });
+    await Activity.create({
+      action: "New programme updated",
+      name: req.body.Uname,
+      role: req.body.role,
+    });
 
     return res.send({
       success: true,
@@ -126,7 +136,11 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       const programme = await Programme.destroy({ where: { id: id } });
-      await Activity.create({ action: " programme deleted", name: req.body.Uname, role: req.body.role });
+      await Activity.create({
+        action: " programme deleted",
+        name: req.body.Uname,
+        role: req.body.role,
+      });
 
       if (programme)
         return res.send({
@@ -153,7 +167,9 @@ exports.get = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
-      const programme = await Programme.findByPk(id);
+      const programme = await Programme.findByPk(id, {
+        include: [ProgramLevel],
+      });
 
       if (programme)
         return res.json({
