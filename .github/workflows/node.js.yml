@@ -26,3 +26,5 @@ jobs:
           npm i
           npm install pm2 -g
           pm2 status
+          pm2 stop ./src/index.js --name=Qetc
+          pm2 start ./src/index.js --name=Qetc
