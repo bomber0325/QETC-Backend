@@ -24,4 +24,4 @@ jobs:
           cd /var/www/html/Marini-backend
           git pull origin dawnsee
           npm i
-          pm2 start ./src/index.js --name=Qetc
+          pm2 restart ./src/index.js --name=Qetc -f
