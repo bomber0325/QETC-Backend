@@ -24,4 +24,5 @@ jobs:
           cd /var/www/html/Marini-backend
           git pull origin dawnsee
           npm i
+          npm install pm2
           pm2 status
