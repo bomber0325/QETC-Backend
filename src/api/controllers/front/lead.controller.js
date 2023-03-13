@@ -46,11 +46,7 @@ exports.createLead = async (req, res, next) => {
     };
     programmeDetails = await ProgrammeDetails.create(programmeDetails);
 
-    await Activity.create({
-      action: "new lead created",
-      name: req.body.Uname,
-      role: req.body.role,
-    });
+    await Activity.create({ action: "new lead created", name: req.body.Uname, role: req.body.role });
 
     return res.json({
       success: true,
@@ -129,6 +125,7 @@ exports.listLead = async (req, res, next) => {
     res.send("programme Error " + err);
   }
 };
+
 
 exports.search = async (req, res, next) => {
   try {
@@ -259,8 +256,6 @@ exports.edit = async (req, res, next) => {
     if (req.file) {
       const image = req?.file?.filename;
       payload[`image`] = image;
-    } else {
-      delete payload["image"];
     }
     const lead = await Lead.update(
       // Values to update
@@ -284,17 +279,13 @@ exports.edit = async (req, res, next) => {
       leadId: payload.id,
     };
     console.log("programmassss=>", programme);
-    programme = await ProgrammeDetails.update(programme, {
+    programme = ProgrammeDetails.update(programme, {
       where: {
-        leadId: payload.id,
+        id: programme.leadId,
       },
     });
 
-    await Activity.create({
-      action: "new lead updated",
-      name: req.body.Uname,
-      role: req.body.role,
-    });
+    await Activity.create({ action: "new lead updated", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,
@@ -317,11 +308,7 @@ exports.delete = async (req, res, next) => {
       });
       const lead = await Lead.destroy({ where: { id: id } });
 
-      await Activity.create({
-        action: "new lead deleted",
-        name: req.body.Uname,
-        role: req.body.role,
-      });
+      await Activity.create({ action: "new lead deleted", name: "superAdmin", role: "samon" });
 
       if (lead)
         return res.send({

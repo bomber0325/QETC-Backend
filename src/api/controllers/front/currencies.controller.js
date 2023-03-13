@@ -139,7 +139,7 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       const currency = await Currency.destroy({ where: { id: id } });
-      await Activity.create({ action: "New Currency deleted", name: req.body.Uname, role: req.body.role });
+      await Activity.create({ action: "New Currency deleted", name: "superAdmin", role: "samon" });
 
       if (currency)
         return res.send({

@@ -13,18 +13,13 @@ const bcrypt = require("bcryptjs");
 exports.create = async (req, res, next) => {
   try {
     let payload = req.body;
-    console.log("User payload", payload);
     console.log(bcrypt.hashSync(req.body.password, 10));
 
     payload.password = bcrypt.hashSync(req.body.password, 10);
     //save the branch in db
     let user = await Users.create(payload);
 
-    await Activity.create({
-      action: "User created",
-      name: payload.Uname,
-      role: payload.Urole,
-    });
+    await Activity.create({ action: "User created", name: payload.Uname, role: payload.role });
 
     return res.json({
       success: true,
@@ -86,21 +81,23 @@ exports.list = async (req, res, next) => {
 exports.edit = async (req, res, next) => {
   try {
     let payload = req.body;
+    if (req.file) {
+      const image = req?.file?.filename;
+      payload[`image`] = image;
+    }
+    payload.password = bcrypt.hashSync(req.body.password, 10);
     const user = await Users.update(
       // Values to update
       payload,
       {
         // Clause
         where: {
-          id: payload.id,
+          name: payload.Uname,
+          role: payload.role
         },
       }
     );
-    await Activity.create({
-      action: "User updated",
-      name: payload.Uname,
-      role: payload.Urole,
-    });
+    await Activity.create({ action: "User updated", name: payload.Uname, role: payload.role });
 
     return res.send({
       success: true,
@@ -115,15 +112,10 @@ exports.edit = async (req, res, next) => {
 // API to delete branch
 exports.delete = async (req, res, next) => {
   try {
-    let payload = req.body;
     const { id } = req.params;
     if (id) {
       const user = await Users.destroy({ where: { id: id } });
-      await Activity.create({
-        action: "User deleted",
-        name: payload.Uname,
-        role: payload.Urole,
-      });
+      await Activity.create({ action: "User deleted", name: "superAdmin", role: "samon" });
 
       if (user)
         return res.send({
@@ -198,22 +190,16 @@ exports.login = async (req, res) => {
         });
       }
 
-      await Activity.create({
-        action: "User logged in",
-        name: user.name,
-        role: user.role,
-      });
+      await Activity.create({ action: "User logged in", name: user.name, role: user.role });
+
 
       const token = jwt.sign({ id: user.email }, "JWT_SECRET", {
         expiresIn: 86400, // 24 hours
       });
 
+
       return res.status(200).send({
-        id: user.id,
-        username: user.name,
-        email: user.email,
-        roles: user.role,
-        token: "Benear " + token,
+        ...user
       });
     } else {
       const lead = await Lead.findOne({
@@ -221,34 +207,38 @@ exports.login = async (req, res) => {
           email: req.body.mail,
         },
       });
-
-      console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
-      console.log("lead id ==>", lead.dataValues.id);
+      
+      // console.log("lead id ==>", lead.dataValues.id);
       // const programeTable = await ProgrammeDetails.findByPk(id);
-      lead.dataValues.programmeDetails = await ProgrammeDetails.findOne({
-        where: {
-          leadId: lead.dataValues.id,
-        },
-        // include: [
-        //   {
-        //     model: ProgrammeDetails,
-        //     as: "ProgrameDetail",
-        //   },
-        // ],
-      });
-      console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
-      if (lead)
+      // lead.dataValues.programmeDetails = await ProgrammeDetails.findOne({
+        //   where: {
+      //     leadId: lead.dataValues.id,
+      //   },
+      //   // include: [
+        //   //   {
+          //   //     model: ProgrammeDetails,
+          //   //     as: "ProgrameDetail",
+          //   //   },
+      //   // ],
+      // });
+      // console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
+      if (lead) {
+        console.log("111>>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
         return res.json({
           success: true,
           message: "lead retrieved successfully",
-          lead,
+          ...lead,
           // programeTable,
         });
-      else
+
+
+      }
+      else {
         return res.status(400).send({
           success: false,
           message: "lead not found for given Id",
         });
+      }
     }
   } catch (error) {
     return res.status(500).send({ message: error.message });
@@ -263,9 +253,10 @@ exports.signup = async (req, res) => {
         name: req.body.username,
         email: req.body.mail,
         password: bcrypt.hashSync(req.body.password, 8),
-        role: "user",
+        role: "user"
       });
-      if (user) res.send({ message: "User registered successfully!" });
+      if (user)
+        res.send({ message: "User registered successfully!" });
     }
   } catch (error) {
     res.status(500).send({ message: error.message });
@@ -275,11 +266,7 @@ exports.signup = async (req, res) => {
 exports.signout = async (req, res) => {
   // Save User to Database
   try {
-    await Activity.create({
-      action: "User logged out",
-      name: req.body.name,
-      role: req.body.role,
-    });
+    await Activity.create({ action: "User logged out", name: req.body.name, role: req.body.role });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -288,7 +275,7 @@ exports.signout = async (req, res) => {
 exports.search = async (req, res, next) => {
   try {
     const user = await Users.findAndCountAll();
-    let { page, limit } = req.query;
+    let { page, limit} = req.query;
     let { name } = req.body;
     const filter = {};
 
@@ -330,4 +317,71 @@ exports.search = async (req, res, next) => {
   } catch (err) {
     res.send("User  Error " + err);
   }
+}
+
+exports.getUser = async (req, res) => {
+  try {
+    if (req.body.state == 0) {
+      if(req.body.role !== "leads") {
+        const user = await Users.findOne({
+          where: {
+            name: req.body.name,
+            role: req.body.role
+          },
+        });
+  
+        return res.status(200).send({
+          ...user
+        });
+      }
+      else {
+        const lead = await Lead.findOne({
+          where: {
+            name: req.body.name,
+          },
+        });
+        return res.status(200).send({
+          ...lead
+        });
+      }
+    } else {
+      const lead = await Lead.findOne({
+        where: {
+          email: req.body.mail,
+        },
+      });
+      
+      console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
+      console.log("lead id ==>", lead.dataValues.id);
+      // const programeTable = await ProgrammeDetails.findByPk(id);
+      lead.dataValues.programmeDetails = await ProgrammeDetails.findOne({
+        where: {
+          leadId: lead.dataValues.id,
+        },
+        // include: [
+        //   {
+        //     model: ProgrammeDetails,
+        //     as: "ProgrameDetail",
+        //   },
+        // ],
+      });
+      console.log(">>>>>>>>>>>.\n\n\n\n\n\n>>>>>>>>>>>\n\n", lead);
+      if (lead)
+        return res.json({
+          success: true,
+          message: "lead retrieved successfully",
+          lead,
+          // programeTable,
+        });
+      else
+        return res.status(400).send({
+          success: false,
+          message: "lead not found for given Id",
+        });
+    }
+
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
 };
+

@@ -1,6 +1,7 @@
 const express = require('express');
 //  const controller = require('../../../controllers/front/university.controller')
 // const controller = require('../../../controllers/front/users.controller');
+const { uploadSingle, upload } = require("../../../utils/upload");
 const controller = require('../../../controllers/front/users.controller');
 
 const router = express.Router();
@@ -8,8 +9,9 @@ const router = express.Router();
 // router.route("/createUser").post(controller.createUser);
 // router.route("/listUsers").get(controller.listUsers)
 router.route("/create").post(controller.create);
+router.route("/getUser").post(controller.getUser);
 router.route("/list").get(controller.list);
-router.route("/edit").put(controller.edit);
+router.route("/edit").put(upload.single("logo"), controller.edit);
 router.route("/delete/:id").delete(controller.delete);
 router.route("/get/:id").get(controller.get);
 router.route("/login").post(controller.login);

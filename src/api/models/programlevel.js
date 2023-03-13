@@ -11,9 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      ProgramLevel.hasMany(models.Programme, {
-        foreignKey: "programmeLevel",
-      });
     }
   }
   ProgramLevel.init(

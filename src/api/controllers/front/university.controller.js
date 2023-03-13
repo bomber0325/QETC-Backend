@@ -43,11 +43,7 @@ exports.create = async (req, res, next) => {
       campus = await Campus.create(campus);
     });
 
-    await Activity.create({
-      action: "New University Created",
-      name: req.body.Uname,
-      role: req.body.role,
-    });
+    await Activity.create({ action: "New University Created", name: req.body.Uname, role: req.body.role });
     return res.send({
       success: true,
       data: university,
@@ -119,10 +115,8 @@ exports.edit = async (req, res, next) => {
     if (req.file) {
       const image = req?.file?.filename;
       payload[`logo`] = image;
-    } else {
-      delete payload["logo"];
     }
-    console.log("req.file >> payload", req.file, payload);
+    console.log("payload", req.file, req.file);
     const university = await University.update(
       // Values to update
       payload,
@@ -159,11 +153,7 @@ exports.edit = async (req, res, next) => {
       );
     });
 
-    await Activity.create({
-      action: "University updated",
-      name: req.body.Uname,
-      role: req.body.role,
-    });
+    await Activity.create({ action: "University updated", name: req.body.Uname, role: req.body.role });
     return res.send({
       success: true,
       message: "University updated successfully",
@@ -184,11 +174,7 @@ exports.delete = async (req, res, next) => {
         where: { UniversityId: id },
       });
 
-      await Activity.create({
-        action: "University deleted",
-        name: req.body.Uname,
-        role: req.body.role,
-      });
+      await Activity.create({ action: "University deleted", name: req.body.Uname, role: req.body.role });
       if (university)
         return res.send({
           success: true,

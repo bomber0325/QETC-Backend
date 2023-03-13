@@ -20,12 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       CommissionInvoice.belongsTo(models.Branch, {
         foreignKey: "branchID",
       });
-      CommissionInvoice.belongsTo(models.BillingInfo, {
-        foreignKey: "billingID",
-      });
-      CommissionInvoice.belongsTo(models.MailingInfo, {
-        foreignKey: "mailingID",
-      });
     }
   }
   CommissionInvoice.init(
@@ -39,7 +33,6 @@ module.exports = (sequelize, DataTypes) => {
       itemdate: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: DataTypes.NOW,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -56,17 +49,12 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "*@*",
       },
       service: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       amount: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      price: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -84,21 +72,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: Math.floor(Math.random() * 4 + 1),
-      },
-      billingID: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        defaultValue: Math.floor(Math.random() * 4 + 1),
-      },
-      mailingID: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        defaultValue: Math.floor(Math.random() * 4 + 1),
-      },
-      type: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: "commission", // or general
       },
     },
     {

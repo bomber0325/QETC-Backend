@@ -12,7 +12,7 @@ router
   .route("/listLeadsManagmentModuleStatuss")
   .get(controller.listLeadsManagmentModuleStatuss);
 router.route("/edit").put(controller.edit);
-router.route("/delete/:id").delete(controller.delete);
+router.route("/delete").post(controller.delete);
 router.route("/get/:id").get(controller.get);
 // router.findAll();
 

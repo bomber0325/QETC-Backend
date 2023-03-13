@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "root",
-    "password": "FfguyFUyFBYUuYFyfTYrytF6765",
+    "password": "",
     "database": "qetc",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "FfguyFUyFBYUuYFyfTYrytF6765",
+    "password": "",
     "database": "qetc",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "FfguyFUyFBYUuYFyfTYrytF6765",
+    "password": "",
     "database": "qetc",
     "host": "127.0.0.1",
     "dialect": "mysql"
