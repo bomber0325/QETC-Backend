@@ -1,7 +1,7 @@
 const db = require("../../models");
-const nodemailer = require('nodemailer');
-const handlebars = require('handlebars');
-const fs = require('fs');
+const nodemailer = require("nodemailer");
+const handlebars = require("handlebars");
+const fs = require("fs");
 const { ApplicationModuleStatus, Branch } = db;
 const Applicants = db.Applicants;
 const ApplicationDetails = db.ApplicationDetails;
@@ -11,22 +11,19 @@ var Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 let transporter = nodemailer.createTransport({
-
-  service: 'gmail',
+  service: "gmail",
   auth: {
-    user: 'anton.david0017@gmail.com',
-    pass: 'wdsqnmnkglvkgfbd'
-  }
+    user: "anton.david0017@gmail.com",
+    pass: "wdsqnmnkglvkgfbd",
+  },
 });
 
 var readHTMLFile = function (path, callback) {
-  fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
+  fs.readFile(path, { encoding: "utf-8" }, function (err, html) {
     if (err) {
       callback(err);
       throw err;
-
-    }
-    else {
+    } else {
       callback(null, html);
     }
   });
@@ -89,27 +86,31 @@ exports.createApplicant = async (req, res, next) => {
     };
     applicantDetails = await ApplicationDetails.create(applicantDetails);
 
-    await Activity.create({ action: "new applicant created", name: req.body.Uname, role: req.body.role });
+    await Activity.create({
+      action: "new applicant created",
+      name: req.body.Uname,
+      role: req.body.role,
+    });
 
-    readHTMLFile(__dirname + '/test.html', function (err, html) {
+    readHTMLFile(__dirname + "/test.html", function (err, html) {
       var template = handlebars.compile(html);
       var replacements = {
-        usercode: "1234"
+        usercode: "1234",
       };
       // res.json({ body: __dirname });
       var htmlToSend = template(replacements);
       var mailOptions = {
-        from: 'anton.david0017@email.com',
+        from: "anton.david0017@email.com",
         to: req.body.email,
-        subject: 'Verify Email',
-        html: htmlToSend
+        subject: "Verify Email",
+        html: htmlToSend,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
           return res.status(201).send({
-            status: '201',
-            msg: error
+            status: "201",
+            msg: error,
           });
         } else {
           // db.query(sql_query);
@@ -129,7 +130,6 @@ exports.createApplicant = async (req, res, next) => {
       // programmeDetails,
       message: "applicant created successfully",
     });
-
   } catch (err) {
     // res.status(500).send({
     //   message:
@@ -365,7 +365,11 @@ exports.edit = async (req, res, next) => {
       },
     });
 
-    await Activity.create({ action: "applicant updated", name: req.body.Uname, role: req.body.role });
+    await Activity.create({
+      action: "applicant updated",
+      name: req.body.Uname,
+      role: req.body.role,
+    });
 
     return res.send({
       success: true,
@@ -387,7 +391,16 @@ exports.delete = async (req, res, next) => {
       });
       const applicant = await Applicants.destroy({ where: { id: id } });
 
+// <<<<< dawnsee
+      await Activity.create({
+        action: "applicant deleted",
+        name: req.body.Uname,
+        role: req.body.role,
+      });
+      /*
+=======
       await Activity.create({ action: "applicant deleted", name: "superAdmin", role: "samon" });
+>>> backend*/
 
       if (applicant)
         return res.send({
@@ -423,8 +436,7 @@ exports.search = async (req, res, next) => {
     limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
 
     if (name) {
-      filter.fullName =
-      {
+      filter.fullName = {
         [Op.like]: "%" + name + "%",
       };
     }
