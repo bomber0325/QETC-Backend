@@ -10,14 +10,14 @@
     "username": "qetc",
     "password": "dO63hGZ702OgcPk6",
     "database": "qetc",
-    "host": ""localhost",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "qetc",
     "password": "dO63hGZ702OgcPk6",
     "database": "qetc",
-    "host": ""localhost",
+    "host": "localhost",
     "dialect": "mysql"
   }
 }
