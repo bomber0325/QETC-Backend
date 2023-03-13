@@ -3,21 +3,21 @@
     "username": "qetc",
     "password": "dO63hGZ702OgcPk6",
     "database": "qetc",
-    "host": "http://139.99.101.155",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "qetc",
     "password": "dO63hGZ702OgcPk6",
     "database": "qetc",
-    "host": "http://139.99.101.155",
+    "host": ""localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "qetc",
     "password": "dO63hGZ702OgcPk6",
     "database": "qetc",
-    "host": "http://139.99.101.155",
+    "host": ""localhost",
     "dialect": "mysql"
   }
 }
