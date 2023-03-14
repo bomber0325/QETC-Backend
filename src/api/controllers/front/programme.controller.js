@@ -1,6 +1,7 @@
 const db = require("../../models");
 const Programme = db.Programme;
 const Activity = db.Activity;
+const ProgramLevel = db.ProgramLevel;
 var Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 // create programms
@@ -72,7 +73,9 @@ exports.listProgrammes = async (req, res, next) => {
       offset: limit * (page - 1),
       limit: limit,
       where: filter,
-    });
+    },
+    ProgramLevel
+    );
     console.log("faqs", faqs);
     // res.send(uni);
     return res.send({
