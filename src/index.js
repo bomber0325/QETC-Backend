@@ -15,7 +15,6 @@ models.sequelize.sync().then(function () {
 });
 
 
-
 console.log(`servers is running on ${port}` )
 
 
