@@ -13,6 +13,23 @@ exports.create = async (req, res, next) => {
       exRate: +exRate,
       status: +status,
     });
+    let data = await Currency.findOne({
+      where: {
+        iso,
+        name,
+      }
+    });
+
+    console.log("12313", data);
+
+    if(data) {
+      return res.json({
+        success: true,
+        data: data,
+        message: "Now Currency is already existed",
+      });
+    }
+
     //save the currency in db
     let currency = await Currency.create({
       iso,
@@ -21,12 +38,14 @@ exports.create = async (req, res, next) => {
       status: +status,
     });
 
-    await Activity.create({ action: "New Currency created", userId: 1 });
+    console.log(req.body.role);
+
+    await Activity.create({ action: "New Currency created", name: req.body.Uname, role: req.body.role });
 
     return res.json({
       success: true,
       data: currency,
-      message: "currency created successfully",
+      message: "currency created success!",
     });
   } catch (err) {
     next();
@@ -102,7 +121,7 @@ exports.edit = async (req, res, next) => {
     );
 
     console.log("edit cur currrr =>", currency);
-    await Activity.create({ action: "New Currency updated", userId: 1 });
+    await Activity.create({ action: "New Currency updated", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,
@@ -120,7 +139,7 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       const currency = await Currency.destroy({ where: { id: id } });
-      await Activity.create({ action: "New Currency deleted", userId: 1 });
+      await Activity.create({ action: "New Currency deleted", name: "superAdmin", role: "samon" });
 
       if (currency)
         return res.send({
@@ -145,9 +164,7 @@ exports.delete = async (req, res, next) => {
 // API to get  by id a currency
 exports.get = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    if (id) {
-      const currency = await Currency.findByPk(id);
+      const currency = await Currency.findAll({order: [["updatedAt", "DESC"]]});
 
       if (currency)
         return res.json({
@@ -160,10 +177,6 @@ exports.get = async (req, res, next) => {
           success: false,
           message: "currency not found for given Id",
         });
-    } else
-      return res
-        .status(400)
-        .send({ success: false, message: "currency Id is required" });
   } catch (error) {
     return next(error);
   }

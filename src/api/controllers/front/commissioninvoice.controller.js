@@ -2,6 +2,9 @@ const db = require("../../models");
 const CommissionInvoice = db.CommissionInvoice;
 const Activity = db.Activity;
 const { University, InvoiceModuleStatus, Branch } = db;
+
+var Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 // create program categorys
 exports.create = async (req, res, next) => {
   try {
@@ -23,7 +26,7 @@ exports.create = async (req, res, next) => {
     commissionInvoice = await CommissionInvoice.create(commissionInvoice);
     await Activity.create({
       action: "New commissionInvoice Created",
-      userId: 1,
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.json({
@@ -120,7 +123,7 @@ exports.edit = async (req, res, next) => {
     );
     await Activity.create({
       action: "New commissionInvoice updated",
-      userId: 1,
+      name: req.body.Uname, role: req.body.role,
     });
 
     return res.send({
@@ -143,7 +146,7 @@ exports.delete = async (req, res, next) => {
       });
       await Activity.create({
         action: " commissionInvoice deleted",
-        userId: 1,
+        name: req.body.Uname, role: req.body.role,
       });
 
       if (commissionInvoice)
@@ -194,4 +197,58 @@ exports.get = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
+};
+
+exports.search = async (req, res, next) => {
+  // console.log("req.query",req.query);
+  try {
+    const uni = await CommissionInvoice.findAndCountAll();
+    let { page, limit } = req.query;
+    let { name } = req.body;
+
+    console.log("unitt", uni.count);
+    console.log("req.queryy", req.query); //name
+    const filter = {};
+
+    page = page !== undefined && page !== "" ? parseInt(page) : 1;
+    limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
+
+    if (name) {
+      filter.name = {
+        [Op.like]: "%" + name + "%",
+      };
+    }
+
+    const total = uni.count;
+
+    if (page > Math.ceil(total / limit) && total > 0)
+      page = Math.ceil(total / limit);
+
+    console.log("filter", filter);
+    const faqs = await CommissionInvoice.findAll({
+      order: [["updatedAt", "DESC"]],
+      offset: limit * (page - 1),
+      limit: limit,
+      where: filter,
+      include: [University, InvoiceModuleStatus, Branch],
+    });
+    console.log("faqs", faqs);
+    // res.send(uni);
+    return res.send({
+      success: true,
+      message: "commission invoice fetched successfully",
+      data: {
+        faqs,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
+        },
+      },
+    });
+  } catch (err) {
+    res.send("commissionInvoice Error " + err);
+  }
+
 };

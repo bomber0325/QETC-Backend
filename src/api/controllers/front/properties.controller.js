@@ -9,7 +9,7 @@ exports.create = async (req, res, next) => {
     console.log("payload", payload);
     //save the property in db
     let property = await Property.create(payload);
-    await Activity.create({ action: "New property Created", userId: 1 });
+    await Activity.create({ action: "New property Created", name: req.body.Uname, role: req.body.role });
 
     return res.json({
       success: true,
@@ -86,7 +86,7 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-    await Activity.create({ action: "property updated", userId: 1 });
+    await Activity.create({ action: "property updated", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,
@@ -105,7 +105,7 @@ exports.delete = async (req, res, next) => {
     if (id) {
       const property = await Property.destroy({ where: { id: id } });
 
-      await Activity.create({ action: "property deleted", userId: 1 });
+      await Activity.create({ action: "property deleted", name: req.body.Uname, role: req.body.role });
       if (property)
         return res.send({
           success: true,

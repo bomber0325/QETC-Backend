@@ -1,5 +1,7 @@
 const db = require("../../models");
 const Branch = db.Branch;
+var Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 const Activity = db.Activity;
 
 // create Branch
@@ -8,7 +10,7 @@ exports.create = async (req, res, next) => {
     let payload = req.body;
     //save the branch in db
     let branch = await Branch.create(payload);
-    await Activity.create({ action: "Branch created", userId: 1 });
+    await Activity.create({ action: "Branch created", name: req.body.Uname, role: req.body.role });
 
     return res.json({
       success: true,
@@ -82,7 +84,7 @@ exports.edit = async (req, res, next) => {
         },
       }
     );
-    await Activity.create({ action: "Branch updated", userId: 1 });
+    await Activity.create({ action: "Branch updated", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,
@@ -100,7 +102,7 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       const branch = await Branch.destroy({ where: { id: id } });
-      await Activity.create({ action: "Branch deleted", userId: 1 });
+      await Activity.create({ action: "Branch deleted", name: "superAdmin", role: "samon" });
 
       if (branch)
         return res.send({
@@ -126,7 +128,7 @@ exports.delete = async (req, res, next) => {
 exports.get = async (req, res, next) => {
   try {
     const { id } = req.params;
-    if (id) {
+    if (id != "undefined") {
       const branch = await Branch.findByPk(id);
 
       if (branch)
@@ -140,11 +142,65 @@ exports.get = async (req, res, next) => {
           success: false,
           message: "branch not found for given Id",
         });
-    } else
+    } else {
+
+      const branch = await Branch.findAll({});
+
       return res
-        .status(400)
-        .send({ success: false, message: "branch Id is required" });
+        .send({ success: true, branch});
+    }
+      
   } catch (error) {
     return next(error);
   }
+};
+
+exports.search = async (req, res, next) => {
+  try {
+    const uni = await Branch.findAndCountAll();
+
+    let { page, limit } = req.query;
+    let { name } = req.body;
+
+    const filter = {};
+
+    page = page !== undefined && page !== "" ? parseInt(page) : 1;
+    limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
+
+    if (name) {
+      filter.name = {
+        [Op.like]: "%" + name + "%",
+      };
+    }
+
+    const total = uni.count;
+
+    if (page > Math.ceil(total / limit) && total > 0)
+      page = Math.ceil(total / limit);
+
+    const faqs = await Branch.findAll({
+      order: [["updatedAt", "DESC"]],
+      offset: limit * (page - 1),
+      limit: limit,
+      where: filter,
+    });
+    console.log("faqs", faqs);
+    // res.send(uni);
+    return res.send({
+      success: true,
+      message: "Branch fetched successfully",
+      data: {
+        faqs,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
+        },
+      },
+    });
+  } catch (err) {
+    res.send("branch Error " + err);
+  }
+  // next();
 };

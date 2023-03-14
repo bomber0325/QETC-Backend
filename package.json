@@ -41,6 +41,7 @@
     "express-rate-limit": "^5.3.0",
     "express-validation": "^3.0.8",
     "express-validator": "^6.14.0",
+    "handlebars": "^4.7.7",
     "http-status": "^1.5.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-simple": "^0.5.6",
@@ -51,6 +52,7 @@
     "multer": "^1.4.3",
     "mysql2": "^3.0.1",
     "mysqldump": "^3.2.0",
+    "nodemailer": "^6.9.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pug": "^3.0.2",
@@ -60,6 +62,7 @@
     "slugify": "^1.6.5"
   },
   "devDependencies": {
+    "nodemon": "^2.0.21",
     "sequelize-cli": "^6.6.0"
   }
 }

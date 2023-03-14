@@ -1,8 +1,33 @@
 const db = require("../../models");
+const nodemailer = require("nodemailer");
+const handlebars = require("handlebars");
+const fs = require("fs");
 const { ApplicationModuleStatus, Branch } = db;
 const Applicants = db.Applicants;
 const ApplicationDetails = db.ApplicationDetails;
 const Activity = db.Activity;
+
+var Sequelize = require("sequelize");
+const Op = Sequelize.Op;
+
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "anton.david0017@gmail.com",
+    pass: "wdsqnmnkglvkgfbd",
+  },
+});
+
+var readHTMLFile = function (path, callback) {
+  fs.readFile(path, { encoding: "utf-8" }, function (err, html) {
+    if (err) {
+      callback(err);
+      throw err;
+    } else {
+      callback(null, html);
+    }
+  });
+};
 
 // create applicants
 exports.createApplicant = async (req, res, next) => {
@@ -61,7 +86,42 @@ exports.createApplicant = async (req, res, next) => {
     };
     applicantDetails = await ApplicationDetails.create(applicantDetails);
 
-    await Activity.create({ action: "new applicant created", userId: 1 });
+    await Activity.create({
+      action: "new applicant created",
+      name: req.body.Uname,
+      role: req.body.role,
+    });
+
+    readHTMLFile(__dirname + "/test.html", function (err, html) {
+      var template = handlebars.compile(html);
+      var replacements = {
+        usercode: "1234",
+      };
+      // res.json({ body: __dirname });
+      var htmlToSend = template(replacements);
+      var mailOptions = {
+        from: "anton.david0017@email.com",
+        to: req.body.email,
+        subject: "Verify Email",
+        html: htmlToSend,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          return res.status(201).send({
+            status: "201",
+            msg: error,
+          });
+        } else {
+          // db.query(sql_query);
+          // return res.status(200).send({
+          //   status: '200',
+          //   msg: 'sent code.'
+          // });
+          console.log("success sent code");
+        }
+      });
+    });
 
     return res.json({
       success: true,
@@ -305,7 +365,11 @@ exports.edit = async (req, res, next) => {
       },
     });
 
-    await Activity.create({ action: "applicant updated", userId: 1 });
+    await Activity.create({
+      action: "applicant updated",
+      name: req.body.Uname,
+      role: req.body.role,
+    });
 
     return res.send({
       success: true,
@@ -327,7 +391,16 @@ exports.delete = async (req, res, next) => {
       });
       const applicant = await Applicants.destroy({ where: { id: id } });
 
-      await Activity.create({ action: "applicant deleted", userId: 1 });
+// <<<<< dawnsee
+      await Activity.create({
+        action: "applicant deleted",
+        name: req.body.Uname,
+        role: req.body.role,
+      });
+      /*
+=======
+      await Activity.create({ action: "applicant deleted", name: "superAdmin", role: "samon" });
+>>> backend*/
 
       if (applicant)
         return res.send({
@@ -346,5 +419,69 @@ exports.delete = async (req, res, next) => {
         .send({ success: false, message: "applicant Id is required" });
   } catch (error) {
     return next(error);
+  }
+};
+
+exports.search = async (req, res, next) => {
+  // console.log("req.query",req.query);
+  try {
+    const uni = await Applicants.findAndCountAll();
+    let { page, limit } = req.query;
+    let { name } = req.body;
+    console.log("sdfsddfdsfdsfds", name);
+
+    const filter = {};
+
+    page = page !== undefined && page !== "" ? parseInt(page) : 1;
+    limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
+
+    if (name) {
+      filter.fullName = {
+        [Op.like]: "%" + name + "%",
+      };
+    }
+
+    const total = uni.count;
+
+    if (page > Math.ceil(total / limit) && total > 0)
+      page = Math.ceil(total / limit);
+
+    console.log("filter", filter, page, limit);
+    const faqs = await Applicants.findAll({
+      order: [["updatedAt", "DESC"]],
+      offset: limit * (page - 1),
+      limit: limit,
+      where: filter,
+      include: [
+        {
+          model: ApplicationDetails,
+          as: "ApplicationDetail",
+          include: [
+            {
+              model: ApplicationModuleStatus,
+              // as: "status",
+              // foreignKey: "sssss",
+            },
+            Branch,
+          ],
+        },
+      ],
+    });
+
+    return res.send({
+      success: true,
+      message: "Applicants fetched successfully",
+      data: {
+        faqs,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
+        },
+      },
+    });
+  } catch (err) {
+    res.send("Applicants Error " + err);
   }
 };

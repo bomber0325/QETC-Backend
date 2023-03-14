@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   Activity.init(
     {
       action: DataTypes.STRING,
+      name: DataTypes.STRING,
+      role: DataTypes.STRING
     },
     {
       sequelize,

@@ -5,6 +5,9 @@ const LeadsManagmentModuleStatus = db.LeadsManagmentModuleStatus;
 const Activity = db.Activity;
 const { Branch, Programme, University } = db;
 
+var Sequelize = require("sequelize");
+const Op = Sequelize.Op;
+
 // create lead
 exports.createLead = async (req, res, next) => {
   try {
@@ -43,7 +46,7 @@ exports.createLead = async (req, res, next) => {
     };
     programmeDetails = await ProgrammeDetails.create(programmeDetails);
 
-    await Activity.create({ action: "new lead created", userId: 1 });
+    await Activity.create({ action: "new lead created", name: req.body.Uname, role: req.body.role });
 
     return res.json({
       success: true,
@@ -64,6 +67,73 @@ exports.listLead = async (req, res, next) => {
     // const programeTable = await ProgrammeDetails.findAll();
     let { page, limit, name } = req.query;
 
+    const filter = {};
+
+    page = page !== undefined && page !== "" ? parseInt(page) : 1;
+    limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
+
+    if (name) {
+      filter.name = { $LIKE: name, $options: "gi" };
+    }
+
+    const total = uni.count;
+
+    if (page > Math.ceil(total / limit) && total > 0)
+      page = Math.ceil(total / limit);
+
+    //  console.log("filter",filter)
+    const faqs = await Lead.findAll({
+      order: [["updatedAt", "DESC"]],
+      offset: limit * (page - 1),
+      limit: limit,
+      where: filter,
+      include: [
+        {
+          model: ProgrammeDetails,
+          as: "ProgrameDetail",
+          include: [
+            {
+              model: LeadsManagmentModuleStatus,
+              // as: "status",
+              // foreignKey: "sssss",
+            },
+          ],
+        },
+        Branch,
+        Programme,
+        LeadsManagmentModuleStatus,
+        University,
+      ],
+    });
+    // console.log("faqs", faqs);
+    // res.send(uni);
+    return res.send({
+      success: true,
+      message: "Leads fetched successfully",
+      data: {
+        faqs,
+        // programeTable,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit) <= 0 ? 1 : Math.ceil(total / limit),
+        },
+      },
+    });
+  } catch (err) {
+    res.send("programme Error " + err);
+  }
+};
+
+
+exports.search = async (req, res, next) => {
+  try {
+    const uni = await Lead.findAndCountAll();
+    // const programeTable = await ProgrammeDetails.findAll();
+    let { page, limit } = req.query;
+    let { name } = req.body;
+
     console.log("unitt", uni.count);
     console.log("req.queryy", req.query); //name
     const filter = {};
@@ -72,7 +142,9 @@ exports.listLead = async (req, res, next) => {
     limit = limit !== undefined && limit !== "" ? parseInt(limit) : 10;
 
     if (name) {
-      filter.name = { $LIKE: name, $options: "gi" };
+      filter.name = {
+        [Op.like]: "%" + name + "%",
+      };
     }
 
     const total = uni.count;
@@ -213,7 +285,7 @@ exports.edit = async (req, res, next) => {
       },
     });
 
-    await Activity.create({ action: "new lead updated", userId: 1 });
+    await Activity.create({ action: "new lead updated", name: req.body.Uname, role: req.body.role });
 
     return res.send({
       success: true,
@@ -236,7 +308,7 @@ exports.delete = async (req, res, next) => {
       });
       const lead = await Lead.destroy({ where: { id: id } });
 
-      await Activity.create({ action: "new lead deleted", userId: 1 });
+      await Activity.create({ action: "new lead deleted", name: "superAdmin", role: "samon" });
 
       if (lead)
         return res.send({
