@@ -1,27 +1,23 @@
-
 {
   "development": {
-    "username": "root",
-    "password": "",
+    "username": "qetc",
+    "password": "dO63hGZ702OgcPk6",
     "database": "qetc",
     "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": "",
+    "username": "qetc",
+    "password": "dO63hGZ702OgcPk6",
     "database": "qetc",
     "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "",
+    "username": "qetc",
+    "password": "dO63hGZ702OgcPk6",
     "database": "qetc",
     "host": "localhost",
     "dialect": "mysql"
   }
 }
-
-
-  
