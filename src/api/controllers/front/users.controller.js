@@ -13,9 +13,10 @@ const bcrypt = require("bcryptjs");
 exports.create = async (req, res, next) => {
   try {
     let payload = req.body;
-    console.log(bcrypt.hashSync(req.body.password, 10));
 
-    payload.password = bcrypt.hashSync(req.body.password, 10);
+    // console.log(bcrypt.hashSync(req.body.password, 10));
+
+    // payload.password = bcrypt.hashSync(req.body.password, 10);
     //save the branch in db
     let user = await Users.create(payload);
 
