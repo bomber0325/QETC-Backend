@@ -169,11 +169,11 @@ exports.get = async (req, res, next) => {
 exports.login = async (req, res) => {
   try {
     if (req.body.state == 0) {
-      // const user = await Users.findOne({
-      //   where: {
-      //     email: req.body.mail,
-      //   },
-      // });
+      const user = await Users.findOne({
+        where: {
+          email: req.body.mail,
+        },
+      });
 
       if (!user) {
         return res.status(404).send({ message: "User Not found." });
