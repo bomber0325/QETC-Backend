@@ -74,7 +74,6 @@ exports.listProgrammes = async (req, res, next) => {
       limit: limit,
       where: filter,
     },
-    ProgramLevel
     );
     console.log("faqs", faqs);
     // res.send(uni);
