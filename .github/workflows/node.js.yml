@@ -5,9 +5,15 @@ name: Node.js CI
 
 on:
   push:
+<<<<<<< HEAD
     branches: [ dawnsee ]
   pull_request:
     branches: [ dawnsee ]
+=======
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+>>>>>>> main
 
 jobs:
   deploy:
@@ -24,7 +30,12 @@ jobs:
           cd /var/www/html/Marini-backend
           git pull origin dawnsee
           npm i
+<<<<<<< HEAD
           npm install pm2 -g
           pm2 status
           pm2 stop ./src/index.js --name=Qetc
           pm2 start ./src/index.js --name=Qetc
+=======
+          pm2 start ./src/index.js --name=Qetc
+
+>>>>>>> main
