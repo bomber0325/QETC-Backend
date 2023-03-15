@@ -245,7 +245,7 @@ exports.delete = async (req, res, next) => {
 // API to get  by id a currency
 exports.get = async (req, res, next) => {
   try {
-      const currency = await Currency.findAll({order: [["updatedAt", "DESC"]], id: req.params.id});
+      const currency = await Currency.findOne({order: [["updatedAt", "DESC"]], id: req.params.id});
 
       if (currency)
         return res.json({
