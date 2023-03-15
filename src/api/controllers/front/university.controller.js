@@ -48,7 +48,7 @@ exports.create = async (req, res, next) => {
     return res.send({
       success: true,
       data: university,
-      message: "university created successfully",
+      message: "university created successful",
     });
   } catch (err) {
     console.log("Error handling =>", err);
