@@ -50,7 +50,7 @@ exports.create = async (req, res, next) => {
       address2: newArr[length-1].address2,
       phone: newArr[length-1].phone,
       email: newArr[length-1].email,
-      isMain: newArr[length-1].isMain,
+//       isMain: newArr[length-1].isMain,
       UniversityId: university.dataValues.id,
     });
     // if(newArr[1]) {
