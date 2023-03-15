@@ -30,8 +30,8 @@ exports.create = async (req, res, next) => {
     console.log("campuss", req.body.campuses);
 
     const newArr = JSON.parse(req.body.campuses);
-    // await newArr.map(async (ele, ind) => {
-    //   console.log("array ********************* /n", ele);
+    await newArr.map(async (ele, ind) => {
+      console.log("array ********************* /n", ele);
       let campus = {
         name: ele.name,
         address1: ele.address1,
@@ -41,28 +41,28 @@ exports.create = async (req, res, next) => {
         isMain: ele.isMain,
         UniversityId: university.dataValues.id,
       };
-    //   await Campus.create(campus);
-    // });
-    Campus.create({
-      name: newArr[0].name,
-      address1: newArr[0].address1,
-      address2: newArr[0].address2,
-      phone: newArr[0].phone,
-      email: newArr[0].email,
-      isMain: newArr[0].isMain,
-      UniversityId: university.dataValues.id,
+      await Campus.create(campus);
     });
-    if(newArr[1]) {
-      Campus.create({
-        name: newArr[1].name,
-        address1: newArr[1].address1,
-        address2: newArr[1].address2,
-        phone: newArr[1].phone,
-        email: newArr[1].email,
-        isMain: newArr[1].isMain,
-        UniversityId: university.dataValues.id,
-      });
-    }
+    // Campus.create({
+    //   name: newArr[0].name,
+    //   address1: newArr[0].address1,
+    //   address2: newArr[0].address2,
+    //   phone: newArr[0].phone,
+    //   email: newArr[0].email,
+    //   isMain: newArr[0].isMain,
+    //   UniversityId: university.dataValues.id,
+    // });
+    // if(newArr[1]) {
+    //   Campus.create({
+    //     name: newArr[1].name,
+    //     address1: newArr[1].address1,
+    //     address2: newArr[1].address2,
+    //     phone: newArr[1].phone,
+    //     email: newArr[1].email,
+    //     isMain: newArr[1].isMain,
+    //     UniversityId: university.dataValues.id,
+    //   });
+    // }
     
 
     await Activity.create({ action: "New University Created", name: req.body.Uname, role: req.body.role });
