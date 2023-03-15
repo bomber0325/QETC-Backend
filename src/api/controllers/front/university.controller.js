@@ -198,7 +198,7 @@ exports.delete = async (req, res, next) => {
         where: { UniversityId: id },
       });
 
-      await Activity.create({ action: "University deleted", name: req.body.Uname, role: req.body.role });
+      await Activity.create({ action: "University deleted", name: "superAdmin", role: "samon" });
       if (university)
         return res.send({
           success: true,

@@ -128,7 +128,8 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     if (id) {
       const programme = await Programme.destroy({ where: { id: id } });
-      await Activity.create({ action: " programme deleted", name: req.body.Uname, role: req.body.role });
+      await Activity.create({ action: " programme deleted",         name: "superAdmin", role: "samon"
+    });
 
       if (programme)
         return res.send({

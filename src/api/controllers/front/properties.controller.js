@@ -105,7 +105,9 @@ exports.delete = async (req, res, next) => {
     if (id) {
       const property = await Property.destroy({ where: { id: id } });
 
-      await Activity.create({ action: "property deleted", name: req.body.Uname, role: req.body.role });
+      await Activity.create({ action: "property deleted",
+      name: "superAdmin", role: "samon"
+    });
       if (property)
         return res.send({
           success: true,
