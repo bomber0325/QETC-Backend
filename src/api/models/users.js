@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       role: DataTypes.STRING,
       branch: DataTypes.STRING,
       position: DataTypes.STRING,
-      date: DataTypes.DATE,
+      date: DataTypes.STRING,
       password: DataTypes.STRING,
       image: DataTypes.STRING
     },

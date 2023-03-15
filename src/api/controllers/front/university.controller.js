@@ -30,7 +30,7 @@ exports.create = async (req, res, next) => {
     console.log("campuss", req.body.campuses);
 
     const newArr = JSON.parse(req.body.campuses);
-    newArr.map(async (ele, ind) => {
+    await newArr.map(async (ele, ind) => {
       console.log("array ********************* /n", ele);
       let campus = {
         name: ele.name,
@@ -41,7 +41,7 @@ exports.create = async (req, res, next) => {
         isMain: ele.isMain,
         UniversityId: university.dataValues.id,
       };
-      campus = Campus.create(campus);
+      await Campus.create(campus);
     });
 
     await Activity.create({ action: "New University Created", name: req.body.Uname, role: req.body.role });
