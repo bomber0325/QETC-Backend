@@ -31,18 +31,18 @@ exports.create = async (req, res, next) => {
 
     const newArr = JSON.parse(req.body.campuses);
     // await newArr.foreach(async (ele) => {
-    // for (i = 0; i < newArr.length; i++) {
-    //   let campus = {
-    //     name: newArr[i].name,
-    //     address1: newArr[i].address1,
-    //     address2: newArr[i].address2,
-    //     phone: newArr[i].phone,
-    //     email: newArr[i].email,
-    //     isMain: newArr[i].isMain,
-    //     UniversityId: university.dataValues.id,
-    //   };
-    //   await Campus.create(campus);
-    // }
+    for (i = 0; i < newArr.length; i++) {
+      let campus = {
+        name: newArr[i].name,
+        address1: newArr[i].address1,
+        address2: newArr[i].address2,
+        phone: newArr[i].phone,
+        email: newArr[i].email,
+        isMain: newArr[i].isMain,
+        UniversityId: university.dataValues.id,
+      };
+      await Campus.create(campus);
+    }
 
   // });
   // Campus.create({
