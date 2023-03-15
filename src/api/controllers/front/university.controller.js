@@ -43,15 +43,15 @@ exports.create = async (req, res, next) => {
       };
       await Campus.create(campus);
     });
-    let length = newArr.length;
-    Campus.create({
-      name: newArr[length-1].name,
-      address1: newArr[length-1].address1,
-      address2: newArr[length-1].address2,
-      phone: newArr[length-1].phone,
-      email: newArr[length-1].email,
+//     let length = newArr.length;
+//     Campus.create({
+//       name: newArr[length-1].name,
+//       address1: newArr[length-1].address1,
+//       address2: newArr[length-1].address2,
+//       phone: newArr[length-1].phone,
+//       email: newArr[length-1].email,
 //       isMain: newArr[length-1].isMain,
-      UniversityId: university.dataValues.id,
+//       UniversityId: university.dataValues.id,
     });
     // if(newArr[1]) {
     //   Campus.create({
