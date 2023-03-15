@@ -30,7 +30,8 @@ exports.create = async (req, res, next) => {
     console.log("campuss", req.body.campuses);
 
     const newArr = JSON.parse(req.body.campuses);
-    const mappedArr = newArr.map(async (ele, ind) => {
+    const mappedArr = await newArr.map(async (ele, ind) => {
+      console.log("array ********************* /n", ele);
       let campus = {
         name: ele.name,
         address1: ele.address1,

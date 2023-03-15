@@ -37,7 +37,6 @@ var readHTMLFile = function (path, callback) {
 
 // create applicants
 exports.createApplicant = async (req, res, next) => {
-  console.log("applicantsid", Applicants);
 
   try {
     // console.log("Req.body applicants =====>", req.body);
