@@ -30,19 +30,21 @@ exports.create = async (req, res, next) => {
     console.log("campuss", req.body.campuses);
 
     const newArr = JSON.parse(req.body.campuses);
-    await newArr.map(async (ele, ind) => {
-      console.log("array ********************* /n", ele);
-      let campus = {
-        name: ele.name,
-        address1: ele.address1,
-        address2: ele.address2,
-        phone: ele.phone,
-        email: ele.email,
-        isMain: ele.isMain,
-        UniversityId: university.dataValues.id,
-      };
-      await Campus.create(campus);
-    });
+    // await newArr.map(async (ele, ind) => {
+    //   console.log("array ********************* /n", ele);
+    //   let campus = {
+    //     name: ele.name,
+    //     address1: ele.address1,
+    //     address2: ele.address2,
+    //     phone: ele.phone,
+    //     email: ele.email,
+    //     isMain: ele.isMain,
+    //     UniversityId: university.dataValues.id,
+    //   };
+    //   await Campus.create(campus);
+    // });
+    Campus.create(newArr[0]);
+    Campus.create(newArr[1]);
 
     await Activity.create({ action: "New University Created", name: req.body.Uname, role: req.body.role });
     return res.send({
