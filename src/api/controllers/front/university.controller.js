@@ -32,7 +32,7 @@ exports.create = async (req, res, next) => {
     const newArr = JSON.parse(req.body.campuses);
     await newArr.map(async (ele, ind) => {
       console.log("array ********************* /n", ele);
-      await callAsynchronousOperation(item);
+      // await callAsynchronousOperation(item);
       let campus = {
         name: ele.name,
         address1: ele.address1,
