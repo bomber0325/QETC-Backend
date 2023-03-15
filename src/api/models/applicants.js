@@ -17,12 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       fullName: DataTypes.STRING,
       email: DataTypes.STRING,
-      phoneNumber: DataTypes.INTEGER,
+      phoneNumber: DataTypes.STRING,
       address1: DataTypes.STRING,
       address2: DataTypes.STRING,
       country: DataTypes.STRING,
       image: DataTypes.STRING,
-      passportNo: DataTypes.INTEGER,
+      passportNo: DataTypes.STRING,
       fileUpload: DataTypes.STRING,
       // applicantsId: DataTypes.INTEGER
     },

@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       email: DataTypes.STRING,
-      [`number`]: DataTypes.INTEGER,
+      [`number`]: DataTypes.STRING,
       role: DataTypes.STRING,
       branch: DataTypes.STRING,
       position: DataTypes.STRING,
-      date: DataTypes.INTEGER,
+      date: DataTypes.DATE,
       password: DataTypes.STRING,
       image: DataTypes.STRING
     },
